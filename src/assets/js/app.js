@@ -18,7 +18,7 @@ function handleSearch(e) {
 
 
 /**
-* Theme: Taplox- Responsive Bootstrap 5 Admin Dashboard
+* Theme: MollyAI- Responsive Bootstrap 5 Admin Dashboard
 * Author: Stackbros
 * Module/App: Main Js
 */
