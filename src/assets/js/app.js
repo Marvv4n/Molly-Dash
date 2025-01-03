@@ -15,44 +15,56 @@ document.addEventListener('DOMContentLoaded', function() {
     // Set theme from localStorage
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-bs-theme', savedTheme);
+
+    // Initialize Bootstrap components
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 });
 
-// Avatar Upload Handling
-function openAvatarUpload() {
+// Avatar Upload Handling - Make functions globally available
+window.openAvatarUpload = function() {
     const modal = new bootstrap.Modal(document.getElementById('avatarUploadModal'));
     modal.show();
-}
+};
 
-function closeAvatarUpload() {
+window.closeAvatarUpload = function() {
     const modal = bootstrap.Modal.getInstance(document.getElementById('avatarUploadModal'));
     if (modal) {
         modal.hide();
     }
-}
+};
 
-async function handleAvatarUpload(event) {
+window.handleAvatarUpload = async function(event) {
     event.preventDefault();
     const fileInput = document.getElementById('avatarFile');
     const file = fileInput.files[0];
     
     if (!file) return;
 
-    // Create preview
-    const reader = new FileReader();
-    reader.onloadend = function() {
-        // Update all avatar images in the UI
-        const avatarImages = document.querySelectorAll('.user-avatar-image');
-        avatarImages.forEach(img => {
-            img.src = reader.result;
-        });
-        
-        // Store in localStorage
-        localStorage.setItem('userAvatar', reader.result);
-    };
-    reader.readAsDataURL(file);
-
-    closeAvatarUpload();
-}
+    try {
+        // Create preview
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            // Update all avatar images in the UI
+            const avatarImages = document.querySelectorAll('.user-avatar-image');
+            avatarImages.forEach(img => {
+                img.src = reader.result;
+            });
+            
+            // Store in localStorage
+            localStorage.setItem('userAvatar', reader.result);
+            
+            // Close modal
+            window.closeAvatarUpload();
+        };
+        reader.readAsDataURL(file);
+    } catch (error) {
+        console.error('Error uploading avatar:', error);
+    }
+};
 
 // Load saved avatar on page load
 document.addEventListener('DOMContentLoaded', function() {
@@ -63,11 +75,4 @@ document.addEventListener('DOMContentLoaded', function() {
             img.src = savedAvatar;
         });
     }
-
-    // Initialize Bootstrap components
-    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
-    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
-
-    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 });
