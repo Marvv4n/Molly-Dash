@@ -6,6 +6,9 @@
 //
 //Sales Report -chart
 //
+// Add toggle state
+var showNumbers = false;
+
 var options = {
     series: [{
         name: "Page Views",
@@ -45,7 +48,7 @@ var options = {
         }
     },
     dataLabels: {
-        enabled: true,
+        enabled: showNumbers,
         formatter: function(val) {
             return val.toFixed(1) + "%"
         }
@@ -194,6 +197,61 @@ class VectorMap {
                 { name: "United States", coords: [37.0902, -95.7129] }
             ],
             markerStyle: {
+
+// Toggle numbers function
+function toggleNumbers() {
+    showNumbers = !showNumbers;
+    chart.updateOptions({
+        dataLabels: {
+            enabled: showNumbers
+        }
+    });
+}
+
+// Improved timespan handlers
+function updateChartTimespan(period) {
+    const now = new Date();
+    const ranges = {
+        '1M': {
+            start: new Date(now.getFullYear(), now.getMonth() - 1, now.getDate()),
+            end: now
+        },
+        '6M': {
+            start: new Date(now.getFullYear(), now.getMonth() - 6, now.getDate()),
+            end: now
+        },
+        '1Y': {
+            start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
+            end: now
+        }
+    };
+
+    const range = ranges[period] || ranges['1Y'];
+    const data = getDataForRange(range.start, range.end);
+    
+    chart.updateSeries([{
+        name: 'Page Views',
+        data: data.pageViews
+    }, {
+        name: 'Clicks',
+        data: data.clicks
+    }, {
+        name: 'Conversion Ratio',
+        data: data.conversion
+    }]);
+}
+
+function getDataForRange(start, end) {
+    // Implement your data fetching logic here
+    // This is a dummy implementation
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return {
+        pageViews: months.map(() => Math.floor(Math.random() * 80)),
+        clicks: months.map(() => Math.floor(Math.random() * 40)),
+        conversion: months.map(() => Math.floor(Math.random() * 50))
+    };
+}
+
                 initial: { fill: "#7f56da" },
                 selected: { fill: "#1bb394" }
             },
