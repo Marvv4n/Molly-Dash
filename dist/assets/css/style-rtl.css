@@ -15191,7 +15191,8 @@ html[data-sidebar-size=hidden] .app-topbar {
 }
 .logo-box .logo-sm {
   display: none;
-  height: var(--taplox-logo-sm-height);
+  height: calc(var(--taplox-logo-sm-height) * 1.3);
+  width: auto;
 }
 .logo-box .logo-lg {
   height: var(--taplox-logo-lg-height);

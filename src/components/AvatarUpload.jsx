@@ -1,94 +1,61 @@
 
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
-const AvatarUpload = () => {
+const AvatarUpload = ({ isOpen, onClose, onUpload }) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState(null);
 
-  const handleFileSelect = useCallback((e) => {
-    const file = e.target.files[0];
-    if (file && file.type.startsWith('image/')) {
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => setPreviewUrl(reader.result);
-      reader.readAsDataURL(file);
-    }
-  }, []);
+  const handleFileSelect = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
 
-  const handleUpload = useCallback(async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!selectedFile) return;
 
-    setUploading(true);
     const formData = new FormData();
     formData.append('avatar', selectedFile);
 
     try {
-      const response = await fetch('http://0.0.0.0:3000/upload-avatar', {
+      const response = await fetch('/api/upload-avatar', {
         method: 'POST',
         body: formData,
       });
       
-      if (!response.ok) throw new Error('Upload failed');
-      
-      const data = await response.json();
-      if (data.success) {
-        document.querySelectorAll('.user-avatar').forEach(img => {
-          img.src = data.avatarUrl;
-        });
-        localStorage.setItem('userAvatar', data.avatarUrl);
-        
-        const modal = document.getElementById('avatarUploadModal');
-        const modalInstance = bootstrap.Modal.getInstance(modal);
-        if (modalInstance) modalInstance.hide();
+      if (response.ok) {
+        const data = await response.json();
+        onUpload(data.avatarUrl);
+        onClose();
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Upload failed. Please try again.');
-    } finally {
-      setUploading(false);
-      setSelectedFile(null);
-      setPreviewUrl(null);
+      console.error('Error uploading avatar:', error);
     }
-  }, [selectedFile]);
+  };
+
+  if (!isOpen) return null;
 
   return (
-    <div className="modal fade" id="avatarUploadModal" tabIndex="-1" aria-hidden="true">
+    <div className="modal fade show" style={{ display: 'block' }}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Upload Avatar</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
+            <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
           <div className="modal-body">
-            <div className="text-center mb-3">
-              {previewUrl && (
-                <img 
-                  src={previewUrl} 
-                  alt="Preview" 
-                  className="rounded-circle"
-                  style={{ width: '120px', height: '120px', objectFit: 'cover' }}
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <input 
+                  type="file" 
+                  className="form-control" 
+                  accept="image/*"
+                  onChange={handleFileSelect}
                 />
-              )}
-            </div>
-            <input 
-              type="file" 
-              className="form-control" 
-              accept="image/*"
-              onChange={handleFileSelect}
-              disabled={uploading}
-            />
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button 
-              type="button" 
-              className="btn btn-primary" 
-              onClick={handleUpload}
-              disabled={!selectedFile || uploading}
-            >
-              {uploading ? 'Uploading...' : 'Upload'}
-            </button>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
+                <button type="submit" className="btn btn-primary" disabled={!selectedFile}>Upload</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

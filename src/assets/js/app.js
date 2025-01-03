@@ -1,74 +1,74 @@
+/// Avatar Upload Modal
+function openAvatarUpload() {
+    const modal = document.getElementById('avatarUploadModal');
+    document.body.classList.add('modal-open');
+    if (modal) {
+        modal.style.display = 'block';
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+}
 
-// Make functions globally available
-window.openAvatarUpload = function() {
-  const modal = new bootstrap.Modal(document.getElementById('avatarUploadModal'));
-  modal.show();
-};
+function closeAvatarUpload() {
+    const modal = document.getElementById('avatarUploadModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+    }
+}
 
-window.closeAvatarUpload = function() {
-  const modal = bootstrap.Modal.getInstance(document.getElementById('avatarUploadModal'));
-  if (modal) {
-    modal.hide();
-  }
-};
-
-window.handleAvatarUpload = async function(event) {
-  event.preventDefault();
-  
-  const fileInput = document.getElementById('avatarFile');
-  const file = fileInput.files[0];
-  const submitButton = event.target.querySelector('button[type="submit"]');
-  const loadingSpinner = document.getElementById('uploadSpinner');
-  
-  if (!file) return;
-  
-  try {
-    submitButton.disabled = true;
-    loadingSpinner.style.display = 'inline-block';
+async function handleAvatarUpload(event) {
+    event.preventDefault();
+    const fileInput = document.getElementById('avatarFile');
+    const file = fileInput.files[0];
     
+    if (!file) return;
+
     const formData = new FormData();
     formData.append('avatar', file);
-    
-    const response = await fetch('/upload-avatar', {
-      method: 'POST',
-      body: formData
-    });
-    
-    if (!response.ok) throw new Error('Upload failed');
-    
-    const data = await response.json();
-    
-    // Update all avatar images
-    const avatarImages = document.querySelectorAll('.rounded-circle');
-    avatarImages.forEach(img => {
-      img.src = data.avatarUrl;
-    });
-    
-    // Save to localStorage
-    localStorage.setItem('userAvatar', data.avatarUrl);
-    
-    window.closeAvatarUpload();
-    
-  } catch (error) {
-    console.error('Error uploading avatar:', error);
-    alert('Failed to upload avatar. Please try again.');
-  } finally {
-    submitButton.disabled = false;
-    loadingSpinner.style.display = 'none';
-    fileInput.value = '';
-  }
-};
 
-// Load saved avatar on page load
-document.addEventListener('DOMContentLoaded', function() {
-  const savedAvatar = localStorage.getItem('userAvatar');
-  if (savedAvatar) {
-    const avatarImages = document.querySelectorAll('.rounded-circle');
-    avatarImages.forEach(img => {
-      img.src = savedAvatar;
-    });
-  }
-});
+    try {
+        const response = await fetch('/api/upload-avatar', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            closeAvatarUpload();
+            // Optionally update avatar display
+            console.log('Avatar uploaded successfully:', data);
+        }
+    } catch (error) {
+        console.error('Error uploading avatar:', error);
+    }
+}rUploadModal');
+    document.body.classList.remove('modal-open');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+    }
+}
+
+// Handle file upload
+function handleAvatarUpload(event) {
+    event.preventDefault();
+    const fileInput = document.getElementById('avatarFile');
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const userAvatar = document.querySelector('.user-profile-image');
+            if (userAvatar) {
+                userAvatar.src = e.target.result;
+            }
+        };
+        reader.readAsDataURL(file);
+    }
+    closeAvatarUpload();
+}
 
 /**
 * Theme: Taplox- Responsive Bootstrap 5 Admin Dashboard
