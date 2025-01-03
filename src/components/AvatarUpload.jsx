@@ -1,24 +1,22 @@
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 const AvatarUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
 
-  const handleFileSelect = (e) => {
+  const handleFileSelect = useCallback((e) => {
     const file = e.target.files[0];
-    if (file) {
+    if (file && file.type.startsWith('image/')) {
       setSelectedFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result);
-      };
+      reader.onloadend = () => setPreviewUrl(reader.result);
       reader.readAsDataURL(file);
     }
-  };
+  }, []);
 
-  const handleUpload = async () => {
+  const handleUpload = useCallback(async () => {
     if (!selectedFile) return;
 
     setUploading(true);
@@ -26,41 +24,41 @@ const AvatarUpload = () => {
     formData.append('avatar', selectedFile);
 
     try {
-      const response = await fetch('/upload-avatar', {
+      const response = await fetch('http://0.0.0.0:3000/upload-avatar', {
         method: 'POST',
         body: formData,
       });
       
-      if (response.ok) {
-        const data = await response.json();
-        // Update user avatar in the UI
-        const avatarImg = document.querySelector('.user-avatar');
-        if (avatarImg) {
-          avatarImg.src = data.avatarUrl;
-        }
-        // Close modal
+      if (!response.ok) throw new Error('Upload failed');
+      
+      const data = await response.json();
+      if (data.success) {
+        document.querySelectorAll('.user-avatar').forEach(img => {
+          img.src = data.avatarUrl;
+        });
+        localStorage.setItem('userAvatar', data.avatarUrl);
+        
         const modal = document.getElementById('avatarUploadModal');
         const modalInstance = bootstrap.Modal.getInstance(modal);
-        if (modalInstance) {
-          modalInstance.hide();
-        }
-      } else {
-        console.error('Upload failed');
+        if (modalInstance) modalInstance.hide();
       }
     } catch (error) {
       console.error('Error:', error);
+      alert('Upload failed. Please try again.');
     } finally {
       setUploading(false);
+      setSelectedFile(null);
+      setPreviewUrl(null);
     }
-  };
+  }, [selectedFile]);
 
   return (
-    <div className="modal fade" id="avatarUploadModal" tabIndex="-1" aria-labelledby="avatarUploadModalLabel" aria-hidden="true">
+    <div className="modal fade" id="avatarUploadModal" tabIndex="-1" aria-hidden="true">
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" id="avatarUploadModalLabel">Upload Avatar</h5>
-            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 className="modal-title">Upload Avatar</h5>
+            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div className="modal-body">
             <div className="text-center mb-3">
@@ -68,8 +66,8 @@ const AvatarUpload = () => {
                 <img 
                   src={previewUrl} 
                   alt="Preview" 
-                  className="rounded-circle avatar-xl"
-                  style={{ width: '110px', height: '110px', objectFit: 'cover' }}
+                  className="rounded-circle"
+                  style={{ width: '120px', height: '120px', objectFit: 'cover' }}
                 />
               )}
             </div>
@@ -78,6 +76,7 @@ const AvatarUpload = () => {
               className="form-control" 
               accept="image/*"
               onChange={handleFileSelect}
+              disabled={uploading}
             />
           </div>
           <div className="modal-footer">
