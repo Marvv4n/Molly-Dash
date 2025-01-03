@@ -580,33 +580,3 @@ html[data-sidebar-color="brand"] {
           }
      }
 }
-.logo-text {
-    font-size: 24px;
-    font-weight: bold;
-    margin-left: 10px;
-    vertical-align: middle;
-}
-
-.dark-logo {
-    color: #000000;
-}
-
-.light-logo {
-    color: #ffffff;
-}
-
-[data-bs-theme=dark] .dark-logo {
-    display: none;
-}
-
-[data-bs-theme=dark] .light-logo {
-    display: inline;
-}
-
-[data-bs-theme=light] .dark-logo {
-    display: inline;
-}
-
-[data-bs-theme=light] .light-logo {
-    display: none;
-}
