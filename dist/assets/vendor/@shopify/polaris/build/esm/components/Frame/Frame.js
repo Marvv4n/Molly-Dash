@@ -31,7 +31,8 @@ class FrameInner extends PureComponent {
       globalRibbonHeight: 0,
       loadingStack: 0,
       toastMessages: [],
-      showContextualSaveBar: false
+      showContextualSaveBar: false,
+      scrollbarAlwaysVisible: false
     };
     this.contextualSaveBar = null;
     this.globalRibbonContainer = null;
@@ -51,6 +52,12 @@ class FrameInner extends PureComponent {
         offset = '0px'
       } = this.props;
       setRootProperty('--pc-frame-offset', offset);
+    };
+    this.setScrollbarAlwaysVisible = () => {
+      const scrollbarWidth = parseInt(document.documentElement.style.getPropertyValue('--pc-app-provider-scrollbar-width'), 10);
+      this.setState({
+        scrollbarAlwaysVisible: scrollbarWidth > 0
+      });
     };
     this.setGlobalRibbonRootProperty = () => {
       const {
@@ -176,6 +183,7 @@ class FrameInner extends PureComponent {
     }
     this.setGlobalRibbonRootProperty();
     this.setOffset();
+    this.setScrollbarAlwaysVisible();
   }
   componentDidUpdate(prevProps) {
     if (this.props.globalRibbon !== prevProps.globalRibbon) {
@@ -272,7 +280,7 @@ class FrameInner extends PureComponent {
     const navigationAttributes = navigation ? {
       'data-has-navigation': true
     } : {};
-    const frameClassName = classNames(styles.Frame, navigation && styles.hasNav, topBar && styles.hasTopBar, sidebar && styles.hasSidebar);
+    const getFrameClassName = () => classNames(styles.Frame, navigation && styles.hasNav, topBar && styles.hasTopBar, sidebar && styles.hasSidebar, this.state.scrollbarAlwaysVisible && styles.ScrollbarAlwaysVisible);
     const contextualSaveBarMarkup = /*#__PURE__*/React.createElement(CSSAnimation, {
       in: showContextualSaveBar,
       className: styles.ContextualSaveBar,
@@ -294,12 +302,14 @@ class FrameInner extends PureComponent {
       startLoading: this.startLoading,
       stopLoading: this.stopLoading,
       setContextualSaveBar: this.setContextualSaveBar,
-      removeContextualSaveBar: this.removeContextualSaveBar
+      removeContextualSaveBar: this.removeContextualSaveBar,
+      contextualSaveBarVisible: this.state.showContextualSaveBar,
+      contextualSaveBarProps: this.contextualSaveBar
     };
     return /*#__PURE__*/React.createElement(FrameContext.Provider, {
       value: context
     }, /*#__PURE__*/React.createElement("div", Object.assign({
-      className: frameClassName
+      className: getFrameClassName()
     }, layer.props, navigationAttributes), skipMarkup, topBarMarkup, navigationMarkup, contextualSaveBarMarkup, loadingMarkup, navigationOverlayMarkup, /*#__PURE__*/React.createElement("main", {
       className: styles.Main,
       id: APP_FRAME_MAIN,

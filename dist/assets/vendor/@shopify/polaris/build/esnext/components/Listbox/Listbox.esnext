@@ -16,12 +16,12 @@ import { KeypressListener } from '../KeypressListener/KeypressListener.esnext';
 import { Text } from '../Text/Text.esnext';
 import { Option } from './components/Option/Option.esnext';
 
-let AutoSelection;
-(function (AutoSelection) {
+let AutoSelection = /*#__PURE__*/function (AutoSelection) {
   AutoSelection["FirstSelected"] = "FIRST_SELECTED";
   AutoSelection["First"] = "FIRST";
   AutoSelection["None"] = "NONE";
-})(AutoSelection || (AutoSelection = {}));
+  return AutoSelection;
+}({});
 const OPTION_SELECTOR = '[data-listbox-option]';
 const OPTION_VALUE_ATTRIBUTE = 'data-listbox-option-value';
 const OPTION_ACTION_ATTRIBUTE = 'data-listbox-option-action';

@@ -24,11 +24,11 @@ import { Scrollable } from '../Scrollable/Scrollable.js';
 import { KeypressListener } from '../KeypressListener/KeypressListener.js';
 import { LegacyStack } from '../LegacyStack/LegacyStack.js';
 
-var Suffix;
-(function (Suffix) {
+var Suffix = /*#__PURE__*/function (Suffix) {
   Suffix["Filter"] = "Filter";
   Suffix["Shortcut"] = "Shortcut";
-})(Suffix || (Suffix = {}));
+  return Suffix;
+}(Suffix || {});
 class LegacyFiltersInner extends Component {
   constructor(...args) {
     super(...args);

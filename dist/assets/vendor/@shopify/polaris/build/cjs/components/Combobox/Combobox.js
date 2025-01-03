@@ -13,6 +13,8 @@ function Combobox({
   preferredPosition = 'below',
   willLoadMoreOptions,
   height,
+  maxHeight,
+  minHeight,
   onScrolledToBottom,
   onClose
 }) {
@@ -93,7 +95,9 @@ function Combobox({
     onClose: handleClose
   }, React.Children.count(children) > 0 ? /*#__PURE__*/React.createElement(Popover.Popover.Pane, {
     onScrolledToBottom: onScrolledToBottom,
-    height: height
+    height: height,
+    maxHeight: maxHeight,
+    minHeight: minHeight
   }, /*#__PURE__*/React.createElement(context.ComboboxListboxContext.Provider, {
     value: listboxContextValue
   }, /*#__PURE__*/React.createElement(context.ComboboxListboxOptionContext.Provider, {

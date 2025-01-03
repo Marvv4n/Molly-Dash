@@ -9,7 +9,6 @@ var ColorPicker_module = require('./ColorPicker.css.js');
 var AlphaPicker = require('./components/AlphaPicker/AlphaPicker.js');
 var HuePicker = require('./components/HuePicker/HuePicker.js');
 var Slidable = require('./components/Slidable/Slidable.js');
-var EventListener = require('../EventListener/EventListener.js');
 
 const RESIZE_DEBOUNCE_TIME_MS = 200;
 class ColorPicker extends React.PureComponent {
@@ -103,13 +102,18 @@ class ColorPicker extends React.PureComponent {
       event.preventDefault();
     };
   }
+  componentWillUnmount() {
+    this.observer?.disconnect();
+  }
   componentDidMount() {
     const {
       colorNode
     } = this;
-    if (colorNode == null) {
+    if (!colorNode) {
       return;
     }
+    this.observer = new ResizeObserver(this.handleResize);
+    this.observer.observe(colorNode);
     this.setState({
       pickerSize: {
         width: colorNode.clientWidth,
@@ -181,10 +185,7 @@ class ColorPicker extends React.PureComponent {
     })), /*#__PURE__*/React.createElement(HuePicker.HuePicker, {
       hue: hue,
       onChange: this.handleHueChange
-    }), alphaSliderMarkup, /*#__PURE__*/React.createElement(EventListener.EventListener, {
-      event: "resize",
-      handler: this.handleResize
-    }));
+    }), alphaSliderMarkup);
   }
 }
 

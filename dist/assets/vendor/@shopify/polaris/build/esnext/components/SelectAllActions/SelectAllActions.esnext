@@ -4,9 +4,9 @@ import { classNames } from '../../utilities/css.esnext';
 import styles from './SelectAllActions.css.esnext';
 import { UnstyledButton } from '../UnstyledButton/UnstyledButton.esnext';
 import { Text } from '../Text/Text.esnext';
-import { CheckableButton } from '../CheckableButton/CheckableButton.esnext';
 import { Box } from '../Box/Box.esnext';
 import { InlineStack } from '../InlineStack/InlineStack.esnext';
+import { CheckableButton } from '../CheckableButton/CheckableButton.esnext';
 
 /**
  * @deprecated Use `BulkActions` instead.

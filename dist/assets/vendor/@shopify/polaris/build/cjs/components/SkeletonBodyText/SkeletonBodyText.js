@@ -8,7 +8,7 @@ function SkeletonBodyText({
 }) {
   const bodyTextLines = [];
   for (let i = 0; i < lines; i++) {
-    bodyTextLines.push( /*#__PURE__*/React.createElement("div", {
+    bodyTextLines.push(/*#__PURE__*/React.createElement("div", {
       className: SkeletonBodyText_module.default.SkeletonBodyText,
       key: i
     }));

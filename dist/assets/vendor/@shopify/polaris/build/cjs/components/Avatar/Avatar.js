@@ -7,12 +7,12 @@ var Avatar_module = require('./Avatar.css.js');
 var hooks = require('../../utilities/i18n/hooks.js');
 var Image = require('../Image/Image.js');
 
-var Status;
-(function (Status) {
+var Status = /*#__PURE__*/function (Status) {
   Status["Pending"] = "PENDING";
   Status["Loaded"] = "LOADED";
   Status["Errored"] = "ERRORED";
-})(Status || (Status = {}));
+  return Status;
+}(Status || {});
 const STYLE_CLASSES = ['one', 'two', 'three', 'four', 'five', 'six', 'seven'];
 const avatarStrokeWidth = {
   xs: '3',

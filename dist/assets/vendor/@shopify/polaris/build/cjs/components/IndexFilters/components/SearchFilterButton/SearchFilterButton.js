@@ -13,6 +13,7 @@ function SearchFilterButton({
   label,
   disabled,
   tooltipContent,
+  disclosureZIndexOverride,
   style,
   hideFilters,
   hideQueryField
@@ -43,7 +44,8 @@ function SearchFilterButton({
   return /*#__PURE__*/React.createElement(Tooltip.Tooltip, {
     content: content,
     preferredPosition: "above",
-    hoverDelay: 400
+    hoverDelay: 400,
+    zIndexOverride: disclosureZIndexOverride
   }, activator);
 }
 

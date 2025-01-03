@@ -8,6 +8,18 @@ class HuePicker extends PureComponent {
     sliderHeight: 0,
     draggerHeight: 0
   };
+  node = null;
+  componentWillUnmount() {
+    this.observer?.disconnect();
+  }
+  componentDidMount() {
+    if (!this.node) {
+      return;
+    }
+    this.observer = new ResizeObserver(this.setSliderHeight);
+    this.observer.observe(this.node);
+    this.setSliderHeight();
+  }
   render() {
     const {
       hue
@@ -19,7 +31,7 @@ class HuePicker extends PureComponent {
     const draggerY = calculateDraggerY(hue, sliderHeight, draggerHeight);
     return /*#__PURE__*/React.createElement("div", {
       className: styles.HuePicker,
-      ref: this.setSliderHeight
+      ref: this.setNode
     }, /*#__PURE__*/React.createElement(Slidable, {
       draggerY: draggerY,
       draggerX: 0,
@@ -27,8 +39,17 @@ class HuePicker extends PureComponent {
       onDraggerHeight: this.setDraggerHeight
     }));
   }
-  setSliderHeight = node => {
-    if (node == null) {
+  setNode = node => {
+    if (!node) {
+      return;
+    }
+    this.node = node;
+  };
+  setSliderHeight = () => {
+    const {
+      node
+    } = this;
+    if (!node) {
       return;
     }
     this.setState({

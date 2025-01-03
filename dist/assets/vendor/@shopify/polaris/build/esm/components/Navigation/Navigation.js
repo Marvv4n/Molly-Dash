@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { WithinContentContext } from '../../utilities/within-content-context.js';
 import { classNames } from '../../utilities/css.js';
 import { getWidth } from '../../utilities/get-width.js';
+import { useBreakpoints } from '../../utilities/breakpoints.js';
 import { NavigationContext } from './context.js';
 import styles from './Navigation.css.js';
 import { Section } from './components/Section/Section.js';
@@ -23,6 +24,9 @@ const Navigation = function Navigation({
     logo
   } = useFrame();
   const width = getWidth(logo, 104);
+  const {
+    mdUp
+  } = useBreakpoints();
   const logoMarkup = logo ? /*#__PURE__*/React.createElement("div", {
     className: classNames(styles.LogoContainer, logoSuffix && styles.hasLogoSuffix)
   }, /*#__PURE__*/React.createElement(UnstyledLink, {
@@ -53,7 +57,7 @@ const Navigation = function Navigation({
   }, /*#__PURE__*/React.createElement("nav", {
     className: styles.Navigation,
     "aria-labelledby": ariaLabelledBy
-  }, mediaMarkup, /*#__PURE__*/React.createElement(Scrollable, {
+  }, mdUp ? mediaMarkup : null, /*#__PURE__*/React.createElement(Scrollable, {
     className: styles.PrimaryNavigation
   }, children))));
 };

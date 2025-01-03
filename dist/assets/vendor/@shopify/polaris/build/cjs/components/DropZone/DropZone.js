@@ -23,6 +23,7 @@ var Labelled = require('../Labelled/Labelled.js');
 // subcomponents so explicitly state the subcomponents in the type definition.
 // Letting this be implicit works in this project but fails in projects that use
 // generated *.d.ts files.
+
 const DropZone = function DropZone({
   dropOnPage,
   label,
@@ -141,6 +142,7 @@ const DropZone = function DropZone({
     if (disabled) return;
     onDragOver && onDragOver();
   }, [disabled, onDragOver]);
+  const document = target.isServer ? null : node.current?.ownerDocument || globalThis.document;
   const handleDragLeave = React.useCallback(event => {
     event.preventDefault();
     if (disabled) return;
@@ -152,16 +154,25 @@ const DropZone = function DropZone({
     setDragging(false);
     setInternalError(false);
     onDragLeave && onDragLeave();
-  }, [dropOnPage, disabled, onDragLeave]);
+  }, [disabled, onDragLeave, dropOnPage, document]);
   const dropNode = dropOnPage && !target.isServer ? document : node.current;
   useEventListener.useEventListener('drop', handleDrop, dropNode);
   useEventListener.useEventListener('dragover', handleDragOver, dropNode);
   useEventListener.useEventListener('dragenter', handleDragEnter, dropNode);
   useEventListener.useEventListener('dragleave', handleDragLeave, dropNode);
-  useEventListener.useEventListener('resize', adjustSize, target.isServer ? null : window);
   useComponentDidMount.useComponentDidMount(() => {
     adjustSize();
   });
+  React.useEffect(() => {
+    if (!node.current) {
+      return;
+    }
+    const observer = new ResizeObserver(adjustSize);
+    observer.observe(node.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, [adjustSize]);
   const uniqId = React.useId();
   const id = idProp ?? uniqId;
   const typeSuffix = capitalize.capitalize(type);

@@ -69,6 +69,7 @@ function IndexFilters({
   loading,
   mode,
   setMode,
+  disclosureZIndexOverride,
   disableStickyMode,
   isFlushWhenSticky = false,
   canCreateNewView = true,
@@ -177,9 +178,10 @@ function IndexFilters({
       onChange: handleChangeSortButton,
       onChangeKey: onSortKeyChange,
       onChangeDirection: onSortDirectionChange,
-      disabled: disabled
+      disabled: disabled,
+      disclosureZIndexOverride: disclosureZIndexOverride
     });
-  }, [handleChangeSortButton, onSortDirectionChange, onSortKeyChange, sortOptions, sortSelected, disabled]);
+  }, [handleChangeSortButton, onSortDirectionChange, onSortKeyChange, sortOptions, sortSelected, disabled, disclosureZIndexOverride]);
   function handleClickEditColumnsButton() {
     beginEdit(IndexFiltersMode.EditingColumns);
   }
@@ -252,6 +254,7 @@ function IndexFilters({
     selected: selected,
     onSelect: onSelect,
     disabled: Boolean(mode !== IndexFiltersMode.Default || disabled),
+    disclosureZIndexOverride: disclosureZIndexOverride,
     canCreateNewView: canCreateNewView,
     onCreateNewView: onCreateNewView
   })), isLoading && mdDown && /*#__PURE__*/React.createElement("div", {
@@ -274,7 +277,8 @@ function IndexFilters({
     style: {
       ...defaultStyle,
       ...transitionStyles[state]
-    }
+    },
+    disclosureZIndexOverride: disclosureZIndexOverride
   }), editColumnsMarkup, sortMarkup) : null, mode === IndexFiltersMode.EditingColumns ? updateButtonsMarkup : null))) : null)), /*#__PURE__*/React.createElement(Transition, {
     nodeRef: filteringRef,
     in: mode === IndexFiltersMode.Filtering,

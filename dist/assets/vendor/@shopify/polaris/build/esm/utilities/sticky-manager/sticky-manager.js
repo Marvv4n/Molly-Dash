@@ -38,6 +38,11 @@ class StickyManager {
     }) => nodeToRemove === stickyNode);
     this.stickyItems.splice(nodeIndex, 1);
   }
+  getStickyItem(node) {
+    return this.stickyItems.find(({
+      stickyNode
+    }) => node === stickyNode);
+  }
   setContainer(el) {
     this.container = el;
     if (isDocument(el)) {

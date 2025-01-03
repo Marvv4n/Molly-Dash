@@ -1,19 +1,18 @@
-import React, { useRef, useState, useCallback, useMemo, useEffect, useLayoutEffect } from 'react';
+import React, { useRef, useState, useCallback, useMemo, useEffect } from 'react';
 import { SortAscendingIcon, SortDescendingIcon } from '@shopify/polaris-icons';
-import { CSSTransition } from 'react-transition-group';
 import { debounce } from '../../utilities/debounce.js';
 import { useToggle } from '../../utilities/use-toggle.js';
+import { useIsomorphicLayoutEffect } from '../../utilities/use-isomorphic-layout-effect.js';
 import { classNames } from '../../utilities/css.js';
-import { useTheme } from '../../utilities/use-theme.js';
 import styles from './IndexTable.css.js';
 import { IndexProvider } from '../IndexProvider/IndexProvider.js';
-import { Cell } from './components/Cell/Cell.js';
 import { Row } from './components/Row/Row.js';
 import { SELECT_ALL_ITEMS, SelectionType } from '../../utilities/index-provider/types.js';
 import { getTableHeadingsBySelector } from './utilities/utilities.js';
 import { EmptySearchResult } from '../EmptySearchResult/EmptySearchResult.js';
 import { ScrollContainer } from './components/ScrollContainer/ScrollContainer.js';
 import { BulkActions } from '../BulkActions/BulkActions.js';
+import { Cell } from './components/Cell/Cell.js';
 import { useIndexValue, useIndexSelectionChange } from '../../utilities/index-provider/hooks.js';
 import { useI18n } from '../../utilities/i18n/hooks.js';
 import { Spinner } from '../Spinner/Spinner.js';
@@ -49,7 +48,6 @@ function IndexTableBase({
   pagination,
   ...restProps
 }) {
-  const theme = useTheme();
   const {
     loading,
     bulkSelectState,
@@ -78,7 +76,6 @@ function IndexTableBase({
   const tableElement = useRef(null);
   const tableBodyElement = useRef(null);
   const condensedListElement = useRef(null);
-  const loadingElement = useRef(null);
   const [tableInitialized, setTableInitialized] = useState(false);
   const [stickyWrapper, setStickyWrapper] = useState(null);
   const [hideScrollContainer, setHideScrollContainer] = useState(true);
@@ -223,7 +220,7 @@ function IndexTableBase({
     }
     scrollingContainer.current = false;
   }, []);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     tableHeadings.current = getTableHeadingsBySelector(tableElement.current, '[data-index-table-heading]');
     stickyTableHeadings.current = getTableHeadingsBySelector(stickyHeaderWrapperElement.current, '[data-index-table-sticky-heading]');
     resizeTableHeadings();
@@ -253,22 +250,8 @@ function IndexTableBase({
     handleSelectionChange(SelectionType.Page, Boolean(!bulkSelectState || bulkSelectState === 'indeterminate'));
   }, [bulkSelectState, handleSelectionChange]);
   const paginatedSelectAllAction = getPaginatedSelectAllAction();
-  const loadingTransitionClassNames = {
-    enter: styles['LoadingContainer-enter'],
-    enterActive: styles['LoadingContainer-enter-active'],
-    exit: styles['LoadingContainer-exit'],
-    exitActive: styles['LoadingContainer-exit-active']
-  };
-  const loadingMarkup = /*#__PURE__*/React.createElement(CSSTransition, {
-    in: loading,
-    classNames: loadingTransitionClassNames,
-    timeout: parseInt(theme.motion['motion-duration-100'], 10),
-    nodeRef: loadingElement,
-    appear: true,
-    unmountOnExit: true
-  }, /*#__PURE__*/React.createElement("div", {
-    className: styles.LoadingPanel,
-    ref: loadingElement
+  const loadingMarkup = /*#__PURE__*/React.createElement("div", {
+    className: classNames(styles.LoadingPanel, loading && styles.LoadingPanelEntered)
   }, /*#__PURE__*/React.createElement("div", {
     className: styles.LoadingPanelRow
   }, /*#__PURE__*/React.createElement(Spinner, {
@@ -277,7 +260,7 @@ function IndexTableBase({
     className: styles.LoadingPanelText
   }, i18n.translate('Polaris.IndexTable.resourceLoadingAccessibilityLabel', {
     resourceNamePlural: resourceName.plural.toLocaleLowerCase()
-  })))));
+  }))));
   const stickyTableClassNames = classNames(styles.StickyTable, hasMoreLeftColumns && styles['StickyTable-scrolling'], condensed && styles['StickyTable-condensed']);
   const shouldShowActions = !condensed || selectedItemsCount;
   const promotedActions = shouldShowActions ? promotedBulkActions : [];

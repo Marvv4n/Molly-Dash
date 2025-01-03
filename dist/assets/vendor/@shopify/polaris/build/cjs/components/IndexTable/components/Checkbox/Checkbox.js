@@ -28,8 +28,6 @@ const Checkbox = /*#__PURE__*/React.memo(function Checkbox({
     resourceName: resourceName.singular
   });
   return /*#__PURE__*/React.createElement(CheckboxWrapper, null, /*#__PURE__*/React.createElement("div", {
-    className: Checkbox_module.default.TableCellContentContainer
-  }, /*#__PURE__*/React.createElement("div", {
     className: Checkbox_module.default.Wrapper,
     onClick: onInteraction,
     onKeyUp: noop
@@ -39,7 +37,7 @@ const Checkbox = /*#__PURE__*/React.memo(function Checkbox({
     labelHidden: true,
     checked: selected,
     disabled: disabled
-  }))));
+  })));
 });
 function CheckboxWrapper({
   children

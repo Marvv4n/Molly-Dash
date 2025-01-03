@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState, useId, useMemo, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect, useId, useMemo } from 'react';
 import { UploadIcon, AlertCircleIcon } from '@shopify/polaris-icons';
 import { debounce } from '../../utilities/debounce.js';
 import { classNames, variationName } from '../../utilities/css.js';
@@ -21,6 +21,7 @@ import { Labelled } from '../Labelled/Labelled.js';
 // subcomponents so explicitly state the subcomponents in the type definition.
 // Letting this be implicit works in this project but fails in projects that use
 // generated *.d.ts files.
+
 const DropZone = function DropZone({
   dropOnPage,
   label,
@@ -139,6 +140,7 @@ const DropZone = function DropZone({
     if (disabled) return;
     onDragOver && onDragOver();
   }, [disabled, onDragOver]);
+  const document = isServer ? null : node.current?.ownerDocument || globalThis.document;
   const handleDragLeave = useCallback(event => {
     event.preventDefault();
     if (disabled) return;
@@ -150,16 +152,25 @@ const DropZone = function DropZone({
     setDragging(false);
     setInternalError(false);
     onDragLeave && onDragLeave();
-  }, [dropOnPage, disabled, onDragLeave]);
+  }, [disabled, onDragLeave, dropOnPage, document]);
   const dropNode = dropOnPage && !isServer ? document : node.current;
   useEventListener('drop', handleDrop, dropNode);
   useEventListener('dragover', handleDragOver, dropNode);
   useEventListener('dragenter', handleDragEnter, dropNode);
   useEventListener('dragleave', handleDragLeave, dropNode);
-  useEventListener('resize', adjustSize, isServer ? null : window);
   useComponentDidMount(() => {
     adjustSize();
   });
+  useEffect(() => {
+    if (!node.current) {
+      return;
+    }
+    const observer = new ResizeObserver(adjustSize);
+    observer.observe(node.current);
+    return () => {
+      observer.disconnect();
+    };
+  }, [adjustSize]);
   const uniqId = useId();
   const id = idProp ?? uniqId;
   const typeSuffix = capitalize(type);

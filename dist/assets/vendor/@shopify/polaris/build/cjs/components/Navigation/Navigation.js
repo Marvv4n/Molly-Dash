@@ -4,6 +4,7 @@ var React = require('react');
 var withinContentContext = require('../../utilities/within-content-context.js');
 var css = require('../../utilities/css.js');
 var getWidth = require('../../utilities/get-width.js');
+var breakpoints = require('../../utilities/breakpoints.js');
 var context = require('./context.js');
 var Navigation_module = require('./Navigation.css.js');
 var Section = require('./components/Section/Section.js');
@@ -25,6 +26,9 @@ const Navigation = function Navigation({
     logo
   } = hooks.useFrame();
   const width = getWidth.getWidth(logo, 104);
+  const {
+    mdUp
+  } = breakpoints.useBreakpoints();
   const logoMarkup = logo ? /*#__PURE__*/React.createElement("div", {
     className: css.classNames(Navigation_module.default.LogoContainer, logoSuffix && Navigation_module.default.hasLogoSuffix)
   }, /*#__PURE__*/React.createElement(UnstyledLink.UnstyledLink, {
@@ -55,7 +59,7 @@ const Navigation = function Navigation({
   }, /*#__PURE__*/React.createElement("nav", {
     className: Navigation_module.default.Navigation,
     "aria-labelledby": ariaLabelledBy
-  }, mediaMarkup, /*#__PURE__*/React.createElement(Scrollable.Scrollable, {
+  }, mdUp ? mediaMarkup : null, /*#__PURE__*/React.createElement(Scrollable.Scrollable, {
     className: Navigation_module.default.PrimaryNavigation
   }, children))));
 };

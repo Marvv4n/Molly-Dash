@@ -32,7 +32,7 @@ function Picker({
   const [textFieldLabelId, setTextFieldLabelId] = React.useState();
   const [listboxId, setListboxId] = React.useState();
   const [query, setQuery] = React.useState('');
-  const [filteredOptions, setFilteredOptions] = React.useState(options);
+  const filteredOptions = React.useRef(options);
   const shouldOpen = !popoverActive;
   const handleClose = React.useCallback(() => {
     setPopoverActive(false);
@@ -41,7 +41,8 @@ function Picker({
   }, [activatorRef, onClose]);
   const handleOpen = React.useCallback(() => {
     setPopoverActive(true);
-  }, []);
+    filteredOptions.current = options;
+  }, [options]);
   const handleFocus = React.useCallback(() => {
     if (shouldOpen) handleOpen();
   }, [shouldOpen, handleOpen]);
@@ -52,9 +53,8 @@ function Picker({
     if (popoverActive) {
       handleClose();
       setQuery('');
-      setFilteredOptions(options);
     }
-  }, [popoverActive, handleClose, options]);
+  }, [popoverActive, handleClose]);
   const textFieldContextValue = React.useMemo(() => ({
     activeOptionId,
     expanded: popoverActive,
@@ -79,16 +79,22 @@ function Picker({
   const updateText = React.useCallback(value => {
     setQuery(value);
     if (value === '') {
-      setFilteredOptions(options);
+      filteredOptions.current = options;
       return;
     }
     const resultOptions = options?.filter(option => FILTER_REGEX(value).exec(reactChildrenText(option.children)));
-    setFilteredOptions(resultOptions ?? []);
+    filteredOptions.current = resultOptions ?? [];
   }, [options]);
   const handleSelect = React.useCallback(selected => {
     setQuery('');
     updateText('');
     listboxProps.onSelect?.(selected);
+    if (!filteredOptions.current.some(option => option.value === selected)) {
+      filteredOptions.current = [...filteredOptions.current, {
+        value: selected,
+        children: selected
+      }];
+    }
     if (!allowMultiple) {
       handleClose();
       setActiveItems([selected]);
@@ -97,7 +103,8 @@ function Picker({
     setActiveItems(selectedOptions => {
       return activeItems.includes(selected) ? selectedOptions.filter(option => option !== selected) : [...selectedOptions, selected];
     });
-  }, [updateText, listboxProps, allowMultiple, activeItems, handleClose]);
+  }, [updateText, listboxProps, allowMultiple, handleClose, activeItems]);
+  const showList = options.length > 0 || query !== '';
   const firstSelectedOption = reactChildrenText(options.find(option => option.value === activeItems?.[0])?.children);
   const queryMatchesExistingOption = options.some(option => {
     const matcher = QUERY_REGEX(query);
@@ -123,7 +130,8 @@ function Picker({
     paddingBlockEnd: "100",
     paddingInline: "200",
     borderBlockEndWidth: "025",
-    borderColor: "border"
+    borderColor: "border",
+    minHeight: showList ? undefined : '58px'
   }, /*#__PURE__*/React.createElement(context.ComboboxTextFieldContext.Provider, {
     value: textFieldContextValue
   }, /*#__PURE__*/React.createElement(SearchField.SearchField, Object.assign({}, searchField, {
@@ -137,7 +145,7 @@ function Picker({
     }),
     labelHidden: true,
     focused: popoverActive
-  })))) : null, /*#__PURE__*/React.createElement(context.ComboboxListboxContext.Provider, {
+  })))) : null, showList && /*#__PURE__*/React.createElement(context.ComboboxListboxContext.Provider, {
     value: listboxContextValue
   }, /*#__PURE__*/React.createElement(context.ComboboxListboxOptionContext.Provider, {
     value: listboxOptionContextValue
@@ -145,7 +153,7 @@ function Picker({
     paddingBlock: "200"
   }, /*#__PURE__*/React.createElement(Listbox.Listbox, Object.assign({}, listboxProps, {
     onSelect: handleSelect
-  }), filteredOptions?.map(option => /*#__PURE__*/React.createElement(Listbox.Listbox.Option, Object.assign({
+  }), filteredOptions.current?.map(option => /*#__PURE__*/React.createElement(Listbox.Listbox.Option, Object.assign({
     key: option.value,
     selected: activeItems.some(item => item === option.value)
   }, option))), addAction && query !== '' && !queryMatchesExistingOption ? /*#__PURE__*/React.createElement(Listbox.Listbox.Action, Object.assign({}, addAction, {

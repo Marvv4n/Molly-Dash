@@ -4,8 +4,7 @@
 
 /* eslint-enable @shopify/strict-component-boundaries */
 
-exports.Key = void 0;
-(function (Key) {
+let Key = /*#__PURE__*/function (Key) {
   Key[Key["Backspace"] = 8] = "Backspace";
   Key[Key["Tab"] = 9] = "Tab";
   Key[Key["Enter"] = 13] = "Enter";
@@ -105,8 +104,11 @@ exports.Key = void 0;
   Key[Key["BackSlash"] = 220] = "BackSlash";
   Key[Key["CloseBracket"] = 221] = "CloseBracket";
   Key[Key["SingleQuote"] = 222] = "SingleQuote";
-})(exports.Key || (exports.Key = {}));
-/* Useful for defining mutually exclusive props such as:
+  return Key;
+}({});
+
+/**
+ * Useful for defining mutually exclusive props such as:
  *
  * interface MessageBasics {
  *   timestamp?: number;
@@ -128,3 +130,5 @@ exports.Key = void 0;
  * // ❌ ERROR: Type '{ attachment: string; text: string; }' is not assignable to type 'Message'.
  * let baz: Message = {attachment: 'a', text: 'b'}
  */
+
+exports.Key = Key;

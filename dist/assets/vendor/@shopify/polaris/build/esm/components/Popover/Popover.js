@@ -2,7 +2,7 @@ import React, { forwardRef, useState, useRef, useId, useImperativeHandle, useCal
 import { findFirstFocusableNodeIncludingDisabled, focusNextFocusableNode } from '../../utilities/focus.js';
 import { portal } from '../shared.js';
 import { setActivatorAttributes } from './set-activator-attributes.js';
-import { PopoverOverlay, PopoverCloseSource } from './components/PopoverOverlay/PopoverOverlay.js';
+import { PopoverCloseSource, PopoverOverlay } from './components/PopoverOverlay/PopoverOverlay.js';
 import { Pane } from './components/Pane/Pane.js';
 import { Section } from './components/Section/Section.js';
 import { Portal } from '../Portal/Portal.js';
@@ -11,6 +11,7 @@ import { Portal } from '../Portal/Portal.js';
 // subcomponents so explicitly state the subcomponents in the type definition.
 // Letting this be implicit works in this project but fails in projects that use
 // generated *.d.ts files.
+
 const PopoverComponent = /*#__PURE__*/forwardRef(function Popover({
   activatorWrapper = 'div',
   children,
@@ -24,6 +25,7 @@ const PopoverComponent = /*#__PURE__*/forwardRef(function Popover({
   zIndexOverride,
   ...rest
 }, ref) {
+  const [isDisplayed, setIsDisplay] = useState(false);
   const [activatorNode, setActivatorNode] = useState();
   const overlayRef = useRef(null);
   const activatorContainer = useRef(null);
@@ -32,25 +34,6 @@ const PopoverComponent = /*#__PURE__*/forwardRef(function Popover({
   function forceUpdatePosition() {
     overlayRef.current?.forceUpdatePosition();
   }
-  useImperativeHandle(ref, () => {
-    return {
-      forceUpdatePosition
-    };
-  });
-  const setAccessibilityAttributes = useCallback(() => {
-    if (activatorContainer.current == null) {
-      return;
-    }
-    const firstFocusable = findFirstFocusableNodeIncludingDisabled(activatorContainer.current);
-    const focusableActivator = firstFocusable || activatorContainer.current;
-    const activatorDisabled = 'disabled' in focusableActivator && Boolean(focusableActivator.disabled);
-    setActivatorAttributes(focusableActivator, {
-      id,
-      active,
-      ariaHaspopup,
-      activatorDisabled
-    });
-  }, [id, active, ariaHaspopup]);
   const handleClose = source => {
     onClose(source);
     if (activatorContainer.current == null || preventFocusOnClose) {
@@ -70,6 +53,52 @@ const PopoverComponent = /*#__PURE__*/forwardRef(function Popover({
       }
     }
   };
+  useImperativeHandle(ref, () => {
+    return {
+      forceUpdatePosition,
+      close: (target = 'activator') => {
+        const source = target === 'activator' ? PopoverCloseSource.EscapeKeypress : PopoverCloseSource.FocusOut;
+        handleClose(source);
+      }
+    };
+  });
+  const setAccessibilityAttributes = useCallback(() => {
+    if (activatorContainer.current == null) {
+      return;
+    }
+    const firstFocusable = findFirstFocusableNodeIncludingDisabled(activatorContainer.current);
+    const focusableActivator = firstFocusable || activatorContainer.current;
+    const activatorDisabled = 'disabled' in focusableActivator && Boolean(focusableActivator.disabled);
+    setActivatorAttributes(focusableActivator, {
+      id,
+      active,
+      ariaHaspopup,
+      activatorDisabled
+    });
+  }, [id, active, ariaHaspopup]);
+  useEffect(() => {
+    function setDisplayState() {
+      /**
+       * This is a workaround to prevent rendering the Popover when the content is moved into
+       * a React portal that hasn't been rendered. We don't want to render the Popover in this
+       * case because the auto-focus logic will break. We wait until the activatorContainer is
+       * displayed, which is when it has an offsetParent, or if the activatorContainer is the
+       * body, if it has a clientWidth bigger than 0.
+       * See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+       */
+
+      setIsDisplay(Boolean(activatorContainer.current && (activatorContainer.current.offsetParent !== null || activatorContainer.current === activatorContainer.current.ownerDocument.body && activatorContainer.current.clientWidth > 0)));
+    }
+    if (!activatorContainer.current) {
+      return;
+    }
+    const observer = new ResizeObserver(setDisplayState);
+    observer.observe(activatorContainer.current);
+    setDisplayState();
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
   useEffect(() => {
     if (!activatorNode && activatorContainer.current) {
       setActivatorNode(activatorContainer.current.firstElementChild);
@@ -84,7 +113,7 @@ const PopoverComponent = /*#__PURE__*/forwardRef(function Popover({
     }
     setAccessibilityAttributes();
   }, [activatorNode, setAccessibilityAttributes]);
-  const portal = activatorNode ? /*#__PURE__*/React.createElement(Portal, {
+  const portal = activatorNode && isDisplayed ? /*#__PURE__*/React.createElement(Portal, {
     idPrefix: "popover"
   }, /*#__PURE__*/React.createElement(PopoverOverlay, Object.assign({
     ref: overlayRef,

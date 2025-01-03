@@ -191,10 +191,20 @@
     min-width:1em;
     grid-area:1 / 2;
     padding:0 var(--p-space-300);
-    font-size:var(--p-font-size-325);
+    font-size:var(--p-font-size-400);
     font-weight:var(--p-font-weight-regular);
-    line-height:var(--p-font-line-height-500);
+    line-height:var(--p-font-line-height-600);
   }
+
+@media (min-width: 48em){
+
+.Polaris-TextField__AutoSizeWrapper_grcea::after,
+  .Polaris-TextField__AutoSizeWrapper_grcea input,
+  .Polaris-TextField__AutoSizeWrapper_grcea textarea{
+      font-size:var(--p-font-size-325);
+      line-height:var(--p-font-line-height-500);
+  }
+    }
 
 .Polaris-TextField__Prefix_10fbz + .Polaris-TextField__InputAndSuffixWrapper_1hbft .Polaris-TextField__AutoSizeWrapper_grcea::after,
   .Polaris-TextField__Prefix_10fbz + .Polaris-TextField__InputAndSuffixWrapper_1hbft input,
@@ -209,9 +219,9 @@
   }
 
 .Polaris-TextField__Input_30ock{
-  font-size:var(--p-font-size-325);
+  font-size:var(--p-font-size-400);
   font-weight:var(--p-font-weight-regular);
-  line-height:var(--p-font-line-height-500);
+  line-height:var(--p-font-line-height-600);
   letter-spacing:initial;
   position:relative;
   z-index:var(--pc-text-field-contents);
@@ -230,6 +240,14 @@
   color:var(--p-color-text);
   align-items:center;
 }
+
+@media (min-width: 48em){
+
+.Polaris-TextField__Input_30ock{
+    font-size:var(--p-font-size-325);
+    line-height:var(--p-font-line-height-500);
+}
+  }
 
 .Polaris-TextField__Prefix_10fbz + .Polaris-TextField__Input_30ock{
     padding-left:0;
