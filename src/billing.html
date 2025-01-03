@@ -1,0 +1,95 @@
+
+@@include("partials/head-css.html")
+
+<!-- Begin page -->
+<div class="wrapper">
+
+     @@include("partials/menu.html")
+
+     <!-- Start Page Content here -->
+     <div class="content-page">
+          <div class="content">
+
+               @@include("partials/topbar.html")
+
+               <div class="container-fluid">
+
+                    <!-- start page title -->
+                    <div class="row">
+                         <div class="col-12">
+                              <div class="page-title-box">
+                                   <h4 class="page-title">Billing & Subscription</h4>
+                              </div>
+                         </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                         <div class="col-12">
+                              <div class="card">
+                                   <div class="card-header">
+                                        <h5 class="card-title mb-0">Current Plan</h5>
+                                   </div>
+                                   <div class="card-body">
+                                        <div class="row align-items-center">
+                                             <div class="col-md-6">
+                                                  <h4>Pro Plan</h4>
+                                                  <p class="text-muted mb-0">Your subscription will renew on Dec 21, 2024</p>
+                                             </div>
+                                             <div class="col-md-6 text-md-end">
+                                                  <button class="btn btn-primary">Upgrade Plan</button>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <div class="col-12">
+                              <div class="card">
+                                   <div class="card-header">
+                                        <h5 class="card-title mb-0">Billing History</h5>
+                                   </div>
+                                   <div class="card-body">
+                                        <div class="table-responsive">
+                                             <table class="table table-centered mb-0">
+                                                  <thead>
+                                                       <tr>
+                                                            <th>Date</th>
+                                                            <th>Invoice ID</th>
+                                                            <th>Plan</th>
+                                                            <th>Amount</th>
+                                                            <th>Status</th>
+                                                       </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                       <tr>
+                                                            <td>Nov 21, 2023</td>
+                                                            <td>#INV-001</td>
+                                                            <td>Pro Plan</td>
+                                                            <td>$99.00</td>
+                                                            <td><span class="badge bg-success">Paid</span></td>
+                                                       </tr>
+                                                       <tr>
+                                                            <td>Oct 21, 2023</td>
+                                                            <td>#INV-002</td>
+                                                            <td>Pro Plan</td>
+                                                            <td>$99.00</td>
+                                                            <td><span class="badge bg-success">Paid</span></td>
+                                                       </tr>
+                                                  </tbody>
+                                             </table>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+
+               </div>
+          </div>
+
+          @@include("partials/footer.html")
+
+     </div>
+</div>
+
+@@include("partials/vendor-scripts.html")
