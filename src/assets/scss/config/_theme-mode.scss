@@ -1,7 +1,7 @@
+
 // 
 // _theme-mode.scss
 // 
-
 
 :root {
     --#{$prefix}logo-lg-height: 26px;
@@ -22,12 +22,12 @@
     --#{$prefix}input-focus-border-color: #b0b0bb;
 }
 
-
 /* Dark Mode only */
-html[data-bs-theme="dark"],
 [data-bs-theme="dark"] {
-
-    --#{$prefix}border-color: #2b2b2b;
+    --#{$prefix}body-color: #e4e4e4;
+    --#{$prefix}body-bg: #111827;
+    --#{$prefix}border-color: #1f2937;
+    --#{$prefix}headings-color: #e4e4e4;
 
     --#{$prefix}light: #{$body-tertiary-bg-dark};
     --#{$prefix}dark: #{$body-tertiary-color-dark};
@@ -35,75 +35,26 @@ html[data-bs-theme="dark"],
     --#{$prefix}light-rgb: #{to-rgb($body-tertiary-bg-dark)};
     --#{$prefix}dark-rgb: #{to-rgb($body-tertiary-color-dark)};
 
-    // Heading Variable
-    --#{$prefix}headings-color: #{$body-color-dark};
+    --#{$prefix}input-border-color: #374151;
+    --#{$prefix}input-focus-border-color: #4b5563;
 
-    --#{$prefix}input-border-color: #333333;
-    --#{$prefix}input-focus-border-color: #404040;
-
+    /* Sidebar Dark */
     --#{$prefix}sidebar-bg: #111827;
     --#{$prefix}sidebar-item-color: #afb9cf;
     --#{$prefix}sidebar-item-hover-bg: #1f2937;
     --#{$prefix}sidebar-item-hover-color: #{$white};
     --#{$prefix}sidebar-border-color: #1f2937;
 
+    /* Topbar Dark */
     --#{$prefix}topbar-bg: #111827;
     --#{$prefix}topbar-item-color: #afb9cf;
     --#{$prefix}topbar-search-bg: #1f2937;
-}
-
-
-/* Sidebar Light */
-html[data-sidebar-color="light"] {
-    --#{$prefix}sidebar-bg: #ffffff;
-    --#{$prefix}sidebar-item-color: #6e708c;
-    --#{$prefix}sidebar-item-hover-bg: #f4f3f6;
-    --#{$prefix}sidebar-item-hover-color: #3d4756;
-    --#{$prefix}sidebar-border-color: #eaedf1;
-}
-
-
-/* Sidebar Dark */
-html[data-sidebar-color="dark"] {
-    --#{$prefix}sidebar-bg: #393f4a;
-    --#{$prefix}sidebar-item-color: #afb9cf;
-    --#{$prefix}sidebar-item-hover-bg: #4697ce;
-    --#{$prefix}sidebar-item-hover-color: #{$white};
-    --#{$prefix}sidebar-border-color: #2f3944;
-}
-
-
-/* Sidebar Dark (Dark Mode Only) */
-html[data-bs-theme="dark"][data-sidebar-color="dark"],
-html[data-bs-theme="dark"][data-sidebar-color="light"] {
-    --#{$prefix}sidebar-bg: #282f36;
-    --#{$prefix}sidebar-item-color: #afb9cf;
-    --#{$prefix}sidebar-item-hover-bg: #303943;
-    --#{$prefix}sidebar-item-hover-color: #{$white};
-    --#{$prefix}sidebar-border-color: #2f3944;
-}
-
-
-/* Topbar Light */
-html[data-topbar-color="light"] {
-    --#{$prefix}topbar-bg: #ffffff;
-    --#{$prefix}topbar-item-color: #707793;
-    --#{$prefix}topbar-search-bg: #f8f7fa;
-}
-
-
-/* Topbar Dark */
-html[data-topbar-color="dark"] {
-    --#{$prefix}topbar-bg: #393f4a;
-    --#{$prefix}topbar-item-color: #afb9cf;
-    --#{$prefix}topbar-search-bg: #424957;
-}
-
-
-/* Topbar Dark (Dark Mode Only) */
-html[data-bs-theme="dark"][data-topbar-color="dark"],
-html[data-bs-theme="dark"][data-topbar-color="light"] {
-    --#{$prefix}topbar-bg: #282f36;
-    --#{$prefix}topbar-item-color: #afb9cf;
-    --#{$prefix}topbar-search-bg: #303943;
+    
+    /* Card and Component Colors */
+    --#{$prefix}card-bg: #1f2937;
+    --#{$prefix}dropdown-bg: #1f2937;
+    --#{$prefix}dropdown-color: #afb9cf;
+    --#{$prefix}dropdown-border-color: #374151;
+    --#{$prefix}modal-bg: #1f2937;
+    --#{$prefix}modal-border-color: #374151;
 }
