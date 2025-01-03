@@ -483,9 +483,7 @@ function clearAllNotifications() {
     localStorage.setItem('notifications', '[]');
     const notificationList = document.querySelector('.notification-list');
     if (notificationList) {
-        notificationList.innerHTML = '<div class="text-center p-2">No notifications</div>
-    </div>
-  </div>';
+        notificationList.innerHTML = '<div class="text-center p-2">No notifications</div>';
     }
     const badge = document.querySelector('.topbar-badge');
     if (badge) {
