@@ -177,17 +177,20 @@ const icons = function () {
 const initBrowserSync = function (done) {
     const startPath = "/index.html";
     browsersync.init({
-        startPath: startPath,
-        server: {
-            baseDir: paths.baseDist,
-            middleware: [
-                function (req, res, next) {
-                    req.method = "GET";
-                    next();
-                },
-            ],
-        },
-    });
+            startPath: startPath,
+            server: {
+                baseDir: paths.baseDist,
+                middleware: [
+                    function (req, res, next) {
+                        req.method = "GET";
+                        next();
+                    },
+                ],
+            },
+            host: '0.0.0.0',
+            port: 3000,
+            open: false
+        });
     done();
 }
 
