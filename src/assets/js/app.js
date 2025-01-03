@@ -1,43 +1,74 @@
 
-// Avatar upload modal
-function openAvatarUpload() {
-  const modal = document.getElementById('avatarUploadModal');
-  if (modal) {
-    modal.style.display = 'block';
-  }
-}
+// Make functions globally available
+window.openAvatarUpload = function() {
+  const modal = new bootstrap.Modal(document.getElementById('avatarUploadModal'));
+  modal.show();
+};
 
-function closeAvatarUpload() {
-  const modal = document.getElementById('avatarUploadModal');
+window.closeAvatarUpload = function() {
+  const modal = bootstrap.Modal.getInstance(document.getElementById('avatarUploadModal'));
   if (modal) {
-    modal.style.display = 'none';
+    modal.hide();
   }
-}
+};
 
-// Handle avatar upload
-function handleAvatarUpload(event) {
+window.handleAvatarUpload = async function(event) {
   event.preventDefault();
+  
   const fileInput = document.getElementById('avatarFile');
   const file = fileInput.files[0];
+  const submitButton = event.target.querySelector('button[type="submit"]');
+  const loadingSpinner = document.getElementById('uploadSpinner');
   
-  if (file) {
+  if (!file) return;
+  
+  try {
+    submitButton.disabled = true;
+    loadingSpinner.style.display = 'inline-block';
+    
     const formData = new FormData();
     formData.append('avatar', file);
     
-    // Here you would make an API call to upload the file
-    // For now, let's just update the avatar preview
-    const userAvatar = document.querySelector('.topbar-item img.rounded-circle');
-    if (userAvatar) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        userAvatar.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
+    const response = await fetch('/upload-avatar', {
+      method: 'POST',
+      body: formData
+    });
+    
+    if (!response.ok) throw new Error('Upload failed');
+    
+    const data = await response.json();
+    
+    // Update all avatar images
+    const avatarImages = document.querySelectorAll('.rounded-circle');
+    avatarImages.forEach(img => {
+      img.src = data.avatarUrl;
+    });
+    
+    // Save to localStorage
+    localStorage.setItem('userAvatar', data.avatarUrl);
+    
+    window.closeAvatarUpload();
+    
+  } catch (error) {
+    console.error('Error uploading avatar:', error);
+    alert('Failed to upload avatar. Please try again.');
+  } finally {
+    submitButton.disabled = false;
+    loadingSpinner.style.display = 'none';
+    fileInput.value = '';
   }
-  
-  closeAvatarUpload();
-}
+};
+
+// Load saved avatar on page load
+document.addEventListener('DOMContentLoaded', function() {
+  const savedAvatar = localStorage.getItem('userAvatar');
+  if (savedAvatar) {
+    const avatarImages = document.querySelectorAll('.rounded-circle');
+    avatarImages.forEach(img => {
+      img.src = savedAvatar;
+    });
+  }
+});
 
 /**
 * Theme: Taplox- Responsive Bootstrap 5 Admin Dashboard

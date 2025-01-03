@@ -1,68 +1,36 @@
 
 const express = require('express');
-const { PrismaClient } = require('@prisma/client');
-const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
+const cors = require('cors');
 
 const app = express();
-const prisma = new PrismaClient();
-
-const storage = multer.diskStorage({
-  destination: 'public/uploads/avatars',
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, 'avatar-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
-
-const upload = multer({ storage });
-
 app.use(cors());
 app.use(express.json());
+app.use(express.static('src'));
 
-// Campaign routes
-app.post('/api/campaigns', async (req, res) => {
-  try {
-    const campaign = await prisma.campaign.create({
-      data: req.body
-    });
-    res.json(campaign);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'src/assets/images/users/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, 'avatar-' + Date.now() + path.extname(file.originalname));
   }
 });
 
-app.get('/api/campaigns', async (req, res) => {
-  const campaigns = await prisma.campaign.findMany({
-    include: { creatives: true }
-  });
-  res.json(campaigns);
+const upload = multer({ storage: storage });
+
+// Handle avatar upload
+app.post('/upload-avatar', upload.single('avatar'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  const filePath = `/assets/images/users/${req.file.filename}`;
+  res.json({ success: true, avatarUrl: filePath });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
-});
-
-
-app.post('/api/upload-avatar', upload.single('avatar'), async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
-
-    const avatarUrl = `/uploads/avatars/${req.file.filename}`;
-    
-    // Update user's avatar in database
-    // Note: You'll need to implement user authentication and get the user ID
-    await prisma.user.update({
-      where: { id: req.user.id },
-      data: { avatarUrl }
-    });
-
-    res.json({ avatarUrl });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
 });
