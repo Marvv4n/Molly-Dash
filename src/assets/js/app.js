@@ -1,3 +1,44 @@
+
+// Avatar upload modal
+function openAvatarUpload() {
+  const modal = document.getElementById('avatarUploadModal');
+  if (modal) {
+    modal.style.display = 'block';
+  }
+}
+
+function closeAvatarUpload() {
+  const modal = document.getElementById('avatarUploadModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
+// Handle avatar upload
+function handleAvatarUpload(event) {
+  event.preventDefault();
+  const fileInput = document.getElementById('avatarFile');
+  const file = fileInput.files[0];
+  
+  if (file) {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    
+    // Here you would make an API call to upload the file
+    // For now, let's just update the avatar preview
+    const userAvatar = document.querySelector('.topbar-item img.rounded-circle');
+    if (userAvatar) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        userAvatar.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  closeAvatarUpload();
+}
+
 /**
 * Theme: Taplox- Responsive Bootstrap 5 Admin Dashboard
 * Author: Stackbros
