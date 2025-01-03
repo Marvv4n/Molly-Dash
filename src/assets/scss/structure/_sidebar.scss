@@ -17,7 +17,8 @@
 
      .logo-sm {
           display: none;
-          height: $logo-sm-height;
+          height: calc($logo-sm-height * 1.3);
+          width: auto;
      }
 
      .logo-lg {
