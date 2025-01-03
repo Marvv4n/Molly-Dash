@@ -209,42 +209,8 @@ class VectorMap {
             ],
             markerStyle: {
 
-// Improved timespan handlers
-function updateChartTimespan(period) {
-    const now = new Date();
-    const ranges = {
-        '1M': {
-            start: new Date(now.getFullYear(), now.getMonth() - 1, now.getDate()),
-            end: now
-        },
-        '6M': {
-            start: new Date(now.getFullYear(), now.getMonth() - 6, now.getDate()),
-            end: now
-        },
-        '1Y': {
-            start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
-            end: now
-        }
-    };
-
-    const range = ranges[period] || ranges['1Y'];
-    const data = getDataForRange(range.start, range.end);
-    
-    chart.updateSeries([{
-        name: 'Page Views',
-        data: data.pageViews
-    }, {
-        name: 'Clicks',
-        data: data.clicks
-    }, {
-        name: 'Conversion Ratio',
-        data: data.conversion
-    }]);
-}
-
+// Combined timespan handler
 function getDataForRange(start, end) {
-    // Implement your data fetching logic here
-    // This is a dummy implementation
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return {
         pageViews: months.map(() => Math.floor(Math.random() * 80)),
