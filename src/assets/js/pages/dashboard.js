@@ -9,6 +9,16 @@ function toggleNumbers() {
     });
 }
 
+// Combined timespan handler
+function getDataForRange(start, end) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return {
+        pageViews: months.map(() => Math.floor(Math.random() * 80)),
+        clicks: months.map(() => Math.floor(Math.random() * 40)),
+        conversion: months.map(() => Math.floor(Math.random() * 50))
+    };
+}
+
 /**
  * Theme: Taplox- Responsive Bootstrap 5 Admin Dashboard
  * Module/App: Dashboard
@@ -35,8 +45,7 @@ var options = {
         name: "Conversion Ratio", 
         type: "area",
         data: [12, 16, 11, 22, 28, 25, 15, 29, 35, 45, 42, 48],
-    }
-    ],
+    }],
     chart: {
         height: 313,
         type: "line",
@@ -178,7 +187,7 @@ var options = {
         },
         ],
     },
-}
+};
 
 var chart = new ApexCharts(
     document.querySelector("#dash-performance-chart"),
@@ -187,12 +196,7 @@ var chart = new ApexCharts(
 
 chart.render();
 
-
-
-
 class VectorMap {
-
-
     initWorldMapMarker() {
         const map = new jsVectorMap({
             map: 'world',
@@ -208,17 +212,6 @@ class VectorMap {
                 { name: "United States", coords: [37.0902, -95.7129] }
             ],
             markerStyle: {
-
-// Combined timespan handler
-function getDataForRange(start, end) {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return {
-        pageViews: months.map(() => Math.floor(Math.random() * 80)),
-        clicks: months.map(() => Math.floor(Math.random() * 40)),
-        conversion: months.map(() => Math.floor(Math.random() * 50))
-    };
-}
-
                 initial: { fill: "#7f56da" },
                 selected: { fill: "#1bb394" }
             },
@@ -239,7 +232,6 @@ function getDataForRange(start, end) {
     init() {
         this.initWorldMapMarker();
     }
-
 }
 
 // Time span selector function
@@ -284,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     });
 });
 
-// Dummy data functions (replace with your actual data fetching logic)
+// Dummy data functions
 function getDailyData(days) {
     const pageViews = Array.from({length: days}, () => Math.floor(Math.random() * 100));
     const clicks = Array.from({length: days}, () => Math.floor(Math.random() * 50));
@@ -300,5 +292,5 @@ function getMonthlyData(months) {
 }
 
 function getAllData() {
-    return getMonthlyData(12); // Or fetch from your data source
+    return getMonthlyData(12);
 }
