@@ -18,19 +18,19 @@ var KeypressListener = require('../KeypressListener/KeypressListener.js');
 var Text = require('../Text/Text.js');
 var Option = require('./components/Option/Option.js');
 
-let AutoSelection = /*#__PURE__*/function (AutoSelection) {
+exports.AutoSelection = void 0;
+(function (AutoSelection) {
   AutoSelection["FirstSelected"] = "FIRST_SELECTED";
   AutoSelection["First"] = "FIRST";
   AutoSelection["None"] = "NONE";
-  return AutoSelection;
-}({});
+})(exports.AutoSelection || (exports.AutoSelection = {}));
 const OPTION_SELECTOR = '[data-listbox-option]';
 const OPTION_VALUE_ATTRIBUTE = 'data-listbox-option-value';
 const OPTION_ACTION_ATTRIBUTE = 'data-listbox-option-action';
 const OPTION_FOCUS_ATTRIBUTE = 'data-focused';
 function Listbox({
   children,
-  autoSelection = AutoSelection.FirstSelected,
+  autoSelection = exports.AutoSelection.FirstSelected,
   enableKeyboardControl,
   accessibilityLabel,
   customListId,
@@ -78,7 +78,7 @@ function Listbox({
     const element = currentOptions.find((option, index) => {
       const isInteractable = option.getAttribute('aria-disabled') !== 'true';
       let isFirstNavigableOption;
-      if (hasSelectedOptions && autoSelection === AutoSelection.FirstSelected) {
+      if (hasSelectedOptions && autoSelection === exports.AutoSelection.FirstSelected) {
         const isSelected = option.getAttribute('aria-selected') === 'true';
         isFirstNavigableOption = isSelected && isInteractable;
       } else {
@@ -172,7 +172,7 @@ function Listbox({
     handleChangeActiveOption(nextOption);
   }, [lazyLoading, currentOptions, activeOption, getFirstNavigableOption, getNavigableOptions, getFormattedOption, handleChangeActiveOption]);
   React.useEffect(() => {
-    if (autoSelection !== AutoSelection.None && !loading && children && React.Children.count(children) > 0) {
+    if (autoSelection !== exports.AutoSelection.None && !loading && children && React.Children.count(children) > 0) {
       resetActiveOption();
     }
   }, [children, autoSelection, activeOption, loading, resetActiveOption]);
@@ -210,7 +210,7 @@ function Listbox({
     let nextIndex = 0;
     let element = activeOption?.element;
     let totalOptions = -1;
-    if (!activeOption && autoSelection === AutoSelection.None) {
+    if (!activeOption && autoSelection === exports.AutoSelection.None) {
       const nextOptions = getNavigableOptions();
       const nextActiveOption = getFirstNavigableOption(nextOptions);
       setCurrentOptions(nextOptions);
@@ -329,5 +329,4 @@ Listbox.Section = Section.Section;
 Listbox.Header = Header.Header;
 Listbox.Action = Action.Action;
 
-exports.AutoSelection = AutoSelection;
 exports.Listbox = Listbox;

@@ -51,6 +51,7 @@ function ProgressBar({
   }, parsedProgress, "%"))))
   /* eslint-enable @shopify/jsx-no-hardcoded-content */;
 }
+
 function parseProgress(progress, warningMessage) {
   let progressWidth;
   if (progress < 0) {

@@ -33,8 +33,7 @@ class FrameInner extends React.PureComponent {
       globalRibbonHeight: 0,
       loadingStack: 0,
       toastMessages: [],
-      showContextualSaveBar: false,
-      scrollbarAlwaysVisible: false
+      showContextualSaveBar: false
     };
     this.contextualSaveBar = null;
     this.globalRibbonContainer = null;
@@ -54,12 +53,6 @@ class FrameInner extends React.PureComponent {
         offset = '0px'
       } = this.props;
       setRootProperty.setRootProperty('--pc-frame-offset', offset);
-    };
-    this.setScrollbarAlwaysVisible = () => {
-      const scrollbarWidth = parseInt(document.documentElement.style.getPropertyValue('--pc-app-provider-scrollbar-width'), 10);
-      this.setState({
-        scrollbarAlwaysVisible: scrollbarWidth > 0
-      });
     };
     this.setGlobalRibbonRootProperty = () => {
       const {
@@ -185,7 +178,6 @@ class FrameInner extends React.PureComponent {
     }
     this.setGlobalRibbonRootProperty();
     this.setOffset();
-    this.setScrollbarAlwaysVisible();
   }
   componentDidUpdate(prevProps) {
     if (this.props.globalRibbon !== prevProps.globalRibbon) {
@@ -282,7 +274,7 @@ class FrameInner extends React.PureComponent {
     const navigationAttributes = navigation ? {
       'data-has-navigation': true
     } : {};
-    const getFrameClassName = () => css.classNames(Frame_module.default.Frame, navigation && Frame_module.default.hasNav, topBar && Frame_module.default.hasTopBar, sidebar && Frame_module.default.hasSidebar, this.state.scrollbarAlwaysVisible && Frame_module.default.ScrollbarAlwaysVisible);
+    const frameClassName = css.classNames(Frame_module.default.Frame, navigation && Frame_module.default.hasNav, topBar && Frame_module.default.hasTopBar, sidebar && Frame_module.default.hasSidebar);
     const contextualSaveBarMarkup = /*#__PURE__*/React.createElement(CSSAnimation.CSSAnimation, {
       in: showContextualSaveBar,
       className: Frame_module.default.ContextualSaveBar,
@@ -304,14 +296,12 @@ class FrameInner extends React.PureComponent {
       startLoading: this.startLoading,
       stopLoading: this.stopLoading,
       setContextualSaveBar: this.setContextualSaveBar,
-      removeContextualSaveBar: this.removeContextualSaveBar,
-      contextualSaveBarVisible: this.state.showContextualSaveBar,
-      contextualSaveBarProps: this.contextualSaveBar
+      removeContextualSaveBar: this.removeContextualSaveBar
     };
     return /*#__PURE__*/React.createElement(context.FrameContext.Provider, {
       value: context$1
     }, /*#__PURE__*/React.createElement("div", Object.assign({
-      className: getFrameClassName()
+      className: frameClassName
     }, shared.layer.props, navigationAttributes), skipMarkup, topBarMarkup, navigationMarkup, contextualSaveBarMarkup, loadingMarkup, navigationOverlayMarkup, /*#__PURE__*/React.createElement("main", {
       className: Frame_module.default.Main,
       id: APP_FRAME_MAIN,

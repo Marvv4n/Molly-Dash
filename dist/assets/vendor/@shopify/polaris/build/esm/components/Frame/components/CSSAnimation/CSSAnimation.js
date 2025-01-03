@@ -2,13 +2,13 @@ import React, { useState, useRef, useEffect } from 'react';
 import { classNames, variationName } from '../../../../utilities/css.js';
 import styles from './CSSAnimation.css.js';
 
-var TransitionStatus = /*#__PURE__*/function (TransitionStatus) {
+var TransitionStatus;
+(function (TransitionStatus) {
   TransitionStatus["Entering"] = "entering";
   TransitionStatus["Entered"] = "entered";
   TransitionStatus["Exiting"] = "exiting";
   TransitionStatus["Exited"] = "exited";
-  return TransitionStatus;
-}(TransitionStatus || {});
+})(TransitionStatus || (TransitionStatus = {}));
 function CSSAnimation({
   in: inProp,
   className,

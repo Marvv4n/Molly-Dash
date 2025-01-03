@@ -19,7 +19,7 @@ function Portal({
   useEffect(() => {
     onPortalCreated();
   }, [onPortalCreated]);
-  return container ? /*#__PURE__*/createPortal(/*#__PURE__*/React.createElement(ThemeProvider, {
+  return container ? /*#__PURE__*/createPortal( /*#__PURE__*/React.createElement(ThemeProvider, {
     theme: isThemeNameLocal(themeName) ? themeName : themeNameDefault,
     "data-portal-id": portalId
   }, children), container) : null;

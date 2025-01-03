@@ -81,9 +81,7 @@ function intersectionWithViewport(rect, viewport = windowRect()) {
     width: right - left
   });
 }
-function windowRect(node) {
-  const document = node?.ownerDocument || globalThis.document;
-  const window = document.defaultView || globalThis.window;
+function windowRect() {
   return new geometry.Rect({
     top: window.scrollY,
     left: window.scrollX,

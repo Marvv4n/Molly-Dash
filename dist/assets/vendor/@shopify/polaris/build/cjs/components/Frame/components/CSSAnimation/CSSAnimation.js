@@ -4,13 +4,13 @@ var React = require('react');
 var css = require('../../../../utilities/css.js');
 var CSSAnimation_module = require('./CSSAnimation.css.js');
 
-var TransitionStatus = /*#__PURE__*/function (TransitionStatus) {
+var TransitionStatus;
+(function (TransitionStatus) {
   TransitionStatus["Entering"] = "entering";
   TransitionStatus["Entered"] = "entered";
   TransitionStatus["Exiting"] = "exiting";
   TransitionStatus["Exited"] = "exited";
-  return TransitionStatus;
-}(TransitionStatus || {});
+})(TransitionStatus || (TransitionStatus = {}));
 function CSSAnimation({
   in: inProp,
   className,

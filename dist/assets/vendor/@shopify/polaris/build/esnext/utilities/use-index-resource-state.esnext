@@ -1,13 +1,13 @@
 import { useState, useCallback } from 'react';
 
-let SelectionType = /*#__PURE__*/function (SelectionType) {
+let SelectionType;
+(function (SelectionType) {
   SelectionType["All"] = "all";
   SelectionType["Page"] = "page";
   SelectionType["Multi"] = "multi";
   SelectionType["Single"] = "single";
   SelectionType["Range"] = "range";
-  return SelectionType;
-}({});
+})(SelectionType || (SelectionType = {}));
 function defaultResourceIDResolver(resource) {
   if ('id' in resource) {
     return resource.id;

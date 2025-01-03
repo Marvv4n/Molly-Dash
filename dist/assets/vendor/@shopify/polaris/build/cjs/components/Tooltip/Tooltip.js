@@ -145,9 +145,7 @@ function Tooltip({
       setActivatorNode(null);
       return;
     }
-    if (node.firstElementChild) {
-      setActivatorNode(node.firstElementChild);
-    }
+    node.firstElementChild instanceof HTMLElement && setActivatorNode(node.firstElementChild);
     activatorContainerRef.current = node;
   }
   function handleMouseEnter() {

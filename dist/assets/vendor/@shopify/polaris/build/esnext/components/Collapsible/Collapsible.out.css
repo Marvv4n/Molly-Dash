@@ -3,6 +3,9 @@
   padding-bottom:0;
   max-height:0;
   overflow:hidden;
+  -webkit-backface-visibility:hidden;
+          backface-visibility:hidden;
+  will-change:max-height;
   transition-property:max-height;
   transition-duration:var(--p-motion-duration-100);
   transition-timing-function:var(--p-motion-ease-out);
@@ -16,17 +19,7 @@
 
 .Polaris-Collapsible--expandOnPrint_1fkoz{
     max-height:none !important;
-    max-width:none !important;
     overflow:visible;
     display:block;
 }
-  }
-
-.Polaris-Collapsible--inline_j8r4u{
-  max-height:none;
-  transition-property:max-width;
-}
-
-.Polaris-Collapsible--inline_j8r4u.Polaris-Collapsible--animateIn_11pzo{
-    max-width:0;
   }

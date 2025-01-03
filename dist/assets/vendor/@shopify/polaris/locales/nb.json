@@ -358,8 +358,7 @@
       "accessibilityLabel": "Avslutt fullskjermmodus"
     },
     "FilterPill": {
-      "clear": "Fjern",
-      "unsavedChanges": "Ulagrede endringer – {label}"
+      "clear": "Fjern"
     },
     "IndexFilters": {
       "searchFilterTooltip": "Søk og filtrer",

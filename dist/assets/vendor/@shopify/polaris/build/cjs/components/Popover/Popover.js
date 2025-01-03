@@ -13,7 +13,6 @@ var Portal = require('../Portal/Portal.js');
 // subcomponents so explicitly state the subcomponents in the type definition.
 // Letting this be implicit works in this project but fails in projects that use
 // generated *.d.ts files.
-
 const PopoverComponent = /*#__PURE__*/React.forwardRef(function Popover({
   activatorWrapper = 'div',
   children,
@@ -27,7 +26,6 @@ const PopoverComponent = /*#__PURE__*/React.forwardRef(function Popover({
   zIndexOverride,
   ...rest
 }, ref) {
-  const [isDisplayed, setIsDisplay] = React.useState(false);
   const [activatorNode, setActivatorNode] = React.useState();
   const overlayRef = React.useRef(null);
   const activatorContainer = React.useRef(null);
@@ -36,6 +34,25 @@ const PopoverComponent = /*#__PURE__*/React.forwardRef(function Popover({
   function forceUpdatePosition() {
     overlayRef.current?.forceUpdatePosition();
   }
+  React.useImperativeHandle(ref, () => {
+    return {
+      forceUpdatePosition
+    };
+  });
+  const setAccessibilityAttributes = React.useCallback(() => {
+    if (activatorContainer.current == null) {
+      return;
+    }
+    const firstFocusable = focus.findFirstFocusableNodeIncludingDisabled(activatorContainer.current);
+    const focusableActivator = firstFocusable || activatorContainer.current;
+    const activatorDisabled = 'disabled' in focusableActivator && Boolean(focusableActivator.disabled);
+    setActivatorAttributes.setActivatorAttributes(focusableActivator, {
+      id,
+      active,
+      ariaHaspopup,
+      activatorDisabled
+    });
+  }, [id, active, ariaHaspopup]);
   const handleClose = source => {
     onClose(source);
     if (activatorContainer.current == null || preventFocusOnClose) {
@@ -55,52 +72,6 @@ const PopoverComponent = /*#__PURE__*/React.forwardRef(function Popover({
       }
     }
   };
-  React.useImperativeHandle(ref, () => {
-    return {
-      forceUpdatePosition,
-      close: (target = 'activator') => {
-        const source = target === 'activator' ? PopoverOverlay.PopoverCloseSource.EscapeKeypress : PopoverOverlay.PopoverCloseSource.FocusOut;
-        handleClose(source);
-      }
-    };
-  });
-  const setAccessibilityAttributes = React.useCallback(() => {
-    if (activatorContainer.current == null) {
-      return;
-    }
-    const firstFocusable = focus.findFirstFocusableNodeIncludingDisabled(activatorContainer.current);
-    const focusableActivator = firstFocusable || activatorContainer.current;
-    const activatorDisabled = 'disabled' in focusableActivator && Boolean(focusableActivator.disabled);
-    setActivatorAttributes.setActivatorAttributes(focusableActivator, {
-      id,
-      active,
-      ariaHaspopup,
-      activatorDisabled
-    });
-  }, [id, active, ariaHaspopup]);
-  React.useEffect(() => {
-    function setDisplayState() {
-      /**
-       * This is a workaround to prevent rendering the Popover when the content is moved into
-       * a React portal that hasn't been rendered. We don't want to render the Popover in this
-       * case because the auto-focus logic will break. We wait until the activatorContainer is
-       * displayed, which is when it has an offsetParent, or if the activatorContainer is the
-       * body, if it has a clientWidth bigger than 0.
-       * See: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
-       */
-
-      setIsDisplay(Boolean(activatorContainer.current && (activatorContainer.current.offsetParent !== null || activatorContainer.current === activatorContainer.current.ownerDocument.body && activatorContainer.current.clientWidth > 0)));
-    }
-    if (!activatorContainer.current) {
-      return;
-    }
-    const observer = new ResizeObserver(setDisplayState);
-    observer.observe(activatorContainer.current);
-    setDisplayState();
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
   React.useEffect(() => {
     if (!activatorNode && activatorContainer.current) {
       setActivatorNode(activatorContainer.current.firstElementChild);
@@ -115,7 +86,7 @@ const PopoverComponent = /*#__PURE__*/React.forwardRef(function Popover({
     }
     setAccessibilityAttributes();
   }, [activatorNode, setAccessibilityAttributes]);
-  const portal = activatorNode && isDisplayed ? /*#__PURE__*/React.createElement(Portal.Portal, {
+  const portal = activatorNode ? /*#__PURE__*/React.createElement(Portal.Portal, {
     idPrefix: "popover"
   }, /*#__PURE__*/React.createElement(PopoverOverlay.PopoverOverlay, Object.assign({
     ref: overlayRef,
@@ -144,5 +115,8 @@ const Popover = Object.assign(PopoverComponent, {
   Section: Section.Section
 });
 
-exports.PopoverCloseSource = PopoverOverlay.PopoverCloseSource;
+Object.defineProperty(exports, 'PopoverCloseSource', {
+  enumerable: true,
+  get: function () { return PopoverOverlay.PopoverCloseSource; }
+});
 exports.Popover = Popover;

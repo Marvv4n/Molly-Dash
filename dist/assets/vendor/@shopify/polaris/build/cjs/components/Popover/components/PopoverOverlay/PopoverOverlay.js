@@ -14,20 +14,20 @@ var EventListener = require('../../../EventListener/EventListener.js');
 var KeypressListener = require('../../../KeypressListener/KeypressListener.js');
 var PositionedOverlay = require('../../../PositionedOverlay/PositionedOverlay.js');
 
-let PopoverCloseSource = /*#__PURE__*/function (PopoverCloseSource) {
+exports.PopoverCloseSource = void 0;
+(function (PopoverCloseSource) {
   PopoverCloseSource[PopoverCloseSource["Click"] = 0] = "Click";
   PopoverCloseSource[PopoverCloseSource["EscapeKeypress"] = 1] = "EscapeKeypress";
   PopoverCloseSource[PopoverCloseSource["FocusOut"] = 2] = "FocusOut";
   PopoverCloseSource[PopoverCloseSource["ScrollOut"] = 3] = "ScrollOut";
-  return PopoverCloseSource;
-}({});
-var TransitionStatus = /*#__PURE__*/function (TransitionStatus) {
+})(exports.PopoverCloseSource || (exports.PopoverCloseSource = {}));
+var TransitionStatus;
+(function (TransitionStatus) {
   TransitionStatus["Entering"] = "entering";
   TransitionStatus["Entered"] = "entered";
   TransitionStatus["Exiting"] = "exiting";
   TransitionStatus["Exited"] = "exited";
-  return TransitionStatus;
-}(TransitionStatus || {});
+})(TransitionStatus || (TransitionStatus = {}));
 class PopoverOverlay extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -35,7 +35,6 @@ class PopoverOverlay extends React.PureComponent {
       transitionStatus: this.props.active ? TransitionStatus.Entering : TransitionStatus.Exited
     };
     this.contentNode = /*#__PURE__*/React.createRef();
-    // eslint-disable-next-line @shopify/react-no-multiple-render-methods
     this.renderPopover = overlayDetails => {
       const {
         measuring,
@@ -59,23 +58,17 @@ class PopoverOverlay extends React.PureComponent {
         height: desiredHeight
       };
       const contentClassNames = css.classNames(Popover_module.default.Content, fullHeight && Popover_module.default['Content-fullHeight'], fluidContent && Popover_module.default['Content-fluidContent']);
-      const {
-        window
-      } = this.state;
       return /*#__PURE__*/React.createElement("div", Object.assign({
         className: className
       }, shared.overlay.props), /*#__PURE__*/React.createElement(EventListener.EventListener, {
         event: "click",
-        handler: this.handleClick,
-        window: window
+        handler: this.handleClick
       }), /*#__PURE__*/React.createElement(EventListener.EventListener, {
         event: "touchstart",
-        handler: this.handleClick,
-        window: window
+        handler: this.handleClick
       }), /*#__PURE__*/React.createElement(KeypressListener.KeypressListener, {
         keyCode: types.Key.Escape,
-        handler: this.handleEscape,
-        document: window?.document
+        handler: this.handleEscape
       }), /*#__PURE__*/React.createElement("div", {
         className: Popover_module.default.FocusTracker
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
@@ -117,10 +110,10 @@ class PopoverOverlay extends React.PureComponent {
       if (wasDescendant || isActivatorDescendant || this.state.transitionStatus !== TransitionStatus.Entered) {
         return;
       }
-      onClose(PopoverCloseSource.Click);
+      onClose(exports.PopoverCloseSource.Click);
     };
     this.handleScrollOut = () => {
-      this.props.onClose(PopoverCloseSource.ScrollOut);
+      this.props.onClose(exports.PopoverCloseSource.ScrollOut);
     };
     this.handleEscape = event => {
       const target = event.target;
@@ -134,14 +127,14 @@ class PopoverOverlay extends React.PureComponent {
       const wasDescendant = wasContentNodeDescendant(composedPath, contentNode);
       const isActivatorDescendant = nodeContainsDescendant(activator, target);
       if (wasDescendant || isActivatorDescendant) {
-        this.props.onClose(PopoverCloseSource.EscapeKeypress);
+        this.props.onClose(exports.PopoverCloseSource.EscapeKeypress);
       }
     };
     this.handleFocusFirstItem = () => {
-      this.props.onClose(PopoverCloseSource.FocusOut);
+      this.props.onClose(exports.PopoverCloseSource.FocusOut);
     };
     this.handleFocusLastItem = () => {
-      this.props.onClose(PopoverCloseSource.FocusOut);
+      this.props.onClose(exports.PopoverCloseSource.FocusOut);
     };
     this.overlayRef = /*#__PURE__*/React.createRef();
   }
@@ -160,20 +153,6 @@ class PopoverOverlay extends React.PureComponent {
       this.focusContent();
       this.changeTransitionStatus(TransitionStatus.Entered);
     }
-    this.observer = new ResizeObserver(() => {
-      this.setState({
-        /**
-         * This is a workaround to enable event listeners to be
-         * re-attached when moving from one document to another
-         * when using a React portal across iframes.
-         * Using a resize observer works because when the clientWidth
-         * will go from 0 to the real width after the activator
-         * gets rendered in its new place.
-         */
-        window: this.props.activator.ownerDocument.defaultView
-      });
-    });
-    this.observer.observe(this.props.activator);
   }
   componentDidUpdate(oldProps) {
     if (this.props.active && !oldProps.active) {
@@ -195,14 +174,9 @@ class PopoverOverlay extends React.PureComponent {
         transitionStatus: TransitionStatus.Exited
       });
     }
-    if (this.props.activator !== oldProps.activator) {
-      this.observer?.unobserve(oldProps.activator);
-      this.observer?.observe(this.props.activator);
-    }
   }
   componentWillUnmount() {
     this.clearTransitionTimeout();
-    this.observer?.disconnect();
   }
   render() {
     const {
@@ -263,6 +237,8 @@ class PopoverOverlay extends React.PureComponent {
       }
     });
   }
+
+  // eslint-disable-next-line @shopify/react-no-multiple-render-methods
 }
 PopoverOverlay.contextType = context.PortalsManagerContext;
 function renderPopoverContent(children, props) {
@@ -292,6 +268,5 @@ function wasPolarisPortalDescendant(composedPath, portalsContainerElement) {
   return composedPath.some(eventTarget => eventTarget instanceof Node && portalsContainerElement?.contains(eventTarget));
 }
 
-exports.PopoverCloseSource = PopoverCloseSource;
 exports.PopoverOverlay = PopoverOverlay;
 exports.nodeContainsDescendant = nodeContainsDescendant;

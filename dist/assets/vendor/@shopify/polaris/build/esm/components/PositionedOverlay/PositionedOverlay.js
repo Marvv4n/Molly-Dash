@@ -107,7 +107,6 @@ class PositionedOverlay extends PureComponent {
           fixed,
           preferInputActivator = true
         } = this.props;
-        const document = activator.ownerDocument;
         const preferredActivator = preferInputActivator ? activator.querySelector('input') || activator : activator;
         const activatorRect = getRectForNode(preferredActivator);
         const currentOverlayRect = getRectForNode(this.overlay);
@@ -127,16 +126,12 @@ class PositionedOverlay extends PureComponent {
         if (topBarElement) {
           topBarOffset = topBarElement.clientHeight;
         }
-        let overlayMargins = {
+        const overlayMargins = this.overlay.firstElementChild && this.overlay.firstChild instanceof HTMLElement ? getMarginsForNode(this.overlay.firstElementChild) : {
           activator: 0,
           container: 0,
           horizontal: 0
         };
-        if (this.overlay.firstElementChild) {
-          const nodeMargins = getMarginsForNode(this.overlay.firstElementChild);
-          overlayMargins = nodeMargins;
-        }
-        const containerRect = windowRect(activator);
+        const containerRect = windowRect();
         const zIndexForLayer = getZIndexForLayerFromNode(activator);
         const zIndex = zIndexForLayer == null ? zIndexForLayer : zIndexForLayer + 1;
         const verticalPosition = calculateVerticalPosition(activatorRect, overlayRect, overlayMargins, scrollableContainerRect, containerRect, preferredPosition, fixed, topBarOffset);
@@ -152,7 +147,7 @@ class PositionedOverlay extends PureComponent {
           height: verticalPosition.height || 0,
           width: fullWidth || preferredPosition === 'cover' ? overlayRect.width : null,
           positioning: verticalPosition.positioning,
-          outsideScrollableContainer: onScrollOut != null && rectIsOutsideOfRect(activatorRect, intersectionWithViewport(scrollableContainerRect, containerRect)),
+          outsideScrollableContainer: onScrollOut != null && rectIsOutsideOfRect(activatorRect, intersectionWithViewport(scrollableContainerRect)),
           zIndex,
           chevronOffset
         }, () => {
@@ -219,8 +214,7 @@ class PositionedOverlay extends PureComponent {
       ref: this.setOverlay
     }, /*#__PURE__*/React.createElement(EventListener, {
       event: "resize",
-      handler: this.handleMeasurement,
-      window: this.overlay?.ownerDocument.defaultView
+      handler: this.handleMeasurement
     }), render(this.overlayDetails()));
   }
   get firstScrollableContainer() {
@@ -235,8 +229,6 @@ class PositionedOverlay extends PureComponent {
   }
 }
 function getMarginsForNode(node) {
-  // Accounts for when the node is moved between documents
-  const window = node.ownerDocument.defaultView || globalThis.window;
   const nodeStyles = window.getComputedStyle(node);
   return {
     activator: parseFloat(nodeStyles.marginTop || '0'),
@@ -245,12 +237,12 @@ function getMarginsForNode(node) {
   };
 }
 function getZIndexForLayerFromNode(node) {
-  const layerNode = node.closest(layer.selector) || node.ownerDocument.body;
-  const zIndex = layerNode === node.ownerDocument.body ? 'auto' : parseInt(window.getComputedStyle(layerNode).zIndex || '0', 10);
+  const layerNode = node.closest(layer.selector) || document.body;
+  const zIndex = layerNode === document.body ? 'auto' : parseInt(window.getComputedStyle(layerNode).zIndex || '0', 10);
   return zIndex === 'auto' || isNaN(zIndex) ? null : zIndex;
 }
 function isDocument(node) {
-  return node.ownerDocument === null;
+  return node === document;
 }
 
 export { PositionedOverlay };

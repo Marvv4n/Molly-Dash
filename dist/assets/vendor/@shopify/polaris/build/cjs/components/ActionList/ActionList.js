@@ -19,8 +19,7 @@ function ActionList({
   sections = [],
   actionRole,
   allowFiltering,
-  onActionAnyItem,
-  filterLabel
+  onActionAnyItem
 }) {
   const i18n = hooks.useI18n();
   const filterActions = React.useContext(FilterActionsProvider.FilterActionsContext);
@@ -91,8 +90,8 @@ function ActionList({
   }, /*#__PURE__*/React.createElement(TextField.TextField, {
     clearButton: true,
     labelHidden: true,
-    label: filterLabel ? filterLabel : i18n.translate('Polaris.ActionList.SearchField.placeholder'),
-    placeholder: filterLabel ? filterLabel : i18n.translate('Polaris.ActionList.SearchField.placeholder'),
+    label: i18n.translate('Polaris.ActionList.SearchField.placeholder'),
+    placeholder: i18n.translate('Polaris.ActionList.SearchField.placeholder'),
     autoComplete: "off",
     value: searchText,
     onChange: value => setSearchText(value),

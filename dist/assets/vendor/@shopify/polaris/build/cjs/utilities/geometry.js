@@ -23,26 +23,19 @@ class Rect {
   }
 }
 function getRectForNode(node) {
-  /**
-   * NOTE: We cannot do node instanceof Element because it will fail when inside of an iframe.
-   * Technically we can do `node instanceof node.ownerDocument.defaultView.Element`but this will
-   * fail when node isn't an Element. We might as well try to run `getBoundingClientRect` and then
-   * have a fallback for when that breaks.
-   */
-  try {
-    const rect = node.getBoundingClientRect();
-    return new Rect({
-      top: rect.top,
-      left: rect.left,
-      width: rect.width,
-      height: rect.height
-    });
-  } catch (_) {
+  if (!(node instanceof Element)) {
     return new Rect({
       width: window.innerWidth,
       height: window.innerHeight
     });
   }
+  const rect = node.getBoundingClientRect();
+  return new Rect({
+    top: rect.top,
+    left: rect.left,
+    width: rect.width,
+    height: rect.height
+  });
 }
 
 exports.Rect = Rect;

@@ -8,7 +8,6 @@ var hooks = require('../../utilities/frame/hooks.js');
 // that the interface defining the props is defined in this file, not imported
 // from elsewhere. This silly workaround ensures that the Props Explorer table
 // is generated correctly.
-
 const Toast = /*#__PURE__*/React.memo(function Toast(props) {
   const id = React.useId();
   const {

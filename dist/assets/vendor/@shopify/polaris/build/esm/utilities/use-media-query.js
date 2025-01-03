@@ -15,7 +15,6 @@ const isQueryAlias = queryOrAlias => Object.prototype.hasOwnProperty.call(queryA
 
 // Prevents TS from widening union types to `string`
 // eslint-disable-next-line @typescript-eslint/ban-types
-
 function useMediaQuery(queryOrAlias, options = {}) {
   const {
     defaultValue = false,

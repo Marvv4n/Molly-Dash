@@ -11,18 +11,16 @@ function Pane({
   sectioned,
   children,
   height,
-  maxHeight,
-  minHeight,
   subdued,
   onScrolledToBottom
 }) {
   const className = classNames(styles.Pane, fixed && styles['Pane-fixed'], subdued && styles['Pane-subdued'], captureOverscroll && styles['Pane-captureOverscroll']);
   const content = sectioned ? wrapWithComponent(children, Section, {}) : children;
-  const style = {
+  const style = height ? {
     height,
-    maxHeight,
-    minHeight
-  };
+    maxHeight: height,
+    minHeight: height
+  } : undefined;
   return fixed ? /*#__PURE__*/React.createElement("div", {
     style: style,
     className: className

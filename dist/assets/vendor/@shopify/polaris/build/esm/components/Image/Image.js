@@ -1,6 +1,6 @@
-import React, { forwardRef, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
-const Image = /*#__PURE__*/forwardRef(({
+function Image({
   alt,
   sourceSet,
   source,
@@ -8,7 +8,7 @@ const Image = /*#__PURE__*/forwardRef(({
   onLoad,
   className,
   ...rest
-}, ref) => {
+}) {
   const finalSourceSet = sourceSet ? sourceSet.map(({
     source: subSource,
     descriptor
@@ -17,7 +17,6 @@ const Image = /*#__PURE__*/forwardRef(({
     if (onLoad) onLoad();
   }, [onLoad]);
   return /*#__PURE__*/React.createElement("img", Object.assign({
-    ref: ref,
     alt: alt,
     src: source,
     crossOrigin: crossOrigin,
@@ -26,7 +25,6 @@ const Image = /*#__PURE__*/forwardRef(({
   }, finalSourceSet ? {
     srcSet: finalSourceSet
   } : {}, rest));
-});
-Image.displayName = 'Image';
+}
 
 export { Image };

@@ -5,7 +5,6 @@ var polarisIcons = require('@shopify/polaris-icons');
 var css = require('../../utilities/css.js');
 var CalloutCard_module = require('./CalloutCard.css.js');
 var LegacyCard = require('../LegacyCard/LegacyCard.js');
-var hooks = require('../../utilities/i18n/hooks.js');
 var utils = require('../Button/utils.js');
 var Button = require('../Button/Button.js');
 var Text = require('../Text/Text.js');
@@ -21,7 +20,6 @@ function CalloutCard({
   secondaryAction,
   onDismiss
 }) {
-  const i18n = hooks.useI18n();
   const primaryActionMarkup = utils.buttonFrom(primaryAction);
   const secondaryActionMarkup = secondaryAction ? utils.buttonFrom(secondaryAction, {
     variant: secondaryAction.variant ?? 'tertiary'
@@ -30,10 +28,10 @@ function CalloutCard({
   const dismissButton = onDismiss ? /*#__PURE__*/React.createElement("div", {
     className: CalloutCard_module.default.Dismiss
   }, /*#__PURE__*/React.createElement(Button.Button, {
-    variant: "tertiary",
-    icon: polarisIcons.XIcon,
+    variant: "plain",
+    icon: polarisIcons.XSmallIcon,
     onClick: onDismiss,
-    accessibilityLabel: i18n.translate('Polaris.Banner.dismissButton')
+    accessibilityLabel: "Dismiss card"
   })) : null;
   const imageClassName = css.classNames(CalloutCard_module.default.Image, onDismiss && CalloutCard_module.default.DismissImage);
   const containerClassName = css.classNames(CalloutCard_module.default.Container, onDismiss && CalloutCard_module.default.hasDismiss);
