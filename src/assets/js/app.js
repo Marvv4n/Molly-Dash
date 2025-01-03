@@ -409,10 +409,14 @@ new ThemeLayout().init();
 // Notification Functions
 function clearAllNotifications() {
     localStorage.setItem('notifications', '[]');
-    document.querySelectorAll('[data-simplebar]').forEach(el => {
-        el.innerHTML = '<div class="text-center p-2">No notifications</div>';
-    });
-    document.querySelector('.topbar-badge').style.display = 'none';
+    const notificationList = document.querySelector('.notification-list');
+    if (notificationList) {
+        notificationList.innerHTML = '<div class="text-center p-2">No notifications</div>';
+    }
+    const badge = document.querySelector('.topbar-badge');
+    if (badge) {
+        badge.style.display = 'none';
+    }
 }
 
 // Store initial notifications
