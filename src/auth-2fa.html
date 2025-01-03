@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     @@include("partials/title-meta.html", {"sub-title": "Two-Factor Authentication"})
+     @@include("partials/head-css.html")
+</head>
+<body class="authentication-bg">
+     <div class="account-pages py-5">
+          <div class="container">
+               <div class="row justify-content-center">
+                    <div class="col-md-6 col-lg-5">
+                         <div class="card border-0 shadow-lg">
+                              <div class="card-body p-5">
+                                   <div class="text-center">
+                                        <div class="mx-auto mb-4 text-center auth-logo">
+                                             <a href="index.html" class="logo-dark">
+                                                  <img src="assets/images/logo-dark.png" height="32" alt="logo dark">
+                                             </a>
+                                             <a href="index.html" class="logo-light">
+                                                  <img src="assets/images/logo-light.png" height="28" alt="logo light">
+                                             </a>
+                                        </div>
+                                        <h4 class="fw-bold text-dark mb-2">Two-Factor Authentication</h4>
+                                        <p class="text-muted">Enter the verification code sent to your device</p>
+                                   </div>
+                                   <form action="index.html" class="mt-4">
+                                        <div class="mb-3">
+                                             <label for="code" class="form-label">Verification Code</label>
+                                             <input type="text" class="form-control" id="code" placeholder="Enter verification code">
+                                        </div>
+                                        <div class="d-grid">
+                                             <button class="btn btn-dark btn-lg fw-medium" type="submit">Verify</button>
+                                        </div>
+                                   </form>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+     @@include("partials/vendor-scripts.html")
+</body>
+</html>
