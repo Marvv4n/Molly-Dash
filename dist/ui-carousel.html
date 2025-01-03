@@ -54,10 +54,10 @@
                             </div>
 
                             <!-- App Search-->
-                            <form class="app-search d-none d-md-block me-auto">
+                            <form class="app-search d-none d-md-block me-auto" onsubmit="handleSearch(event)">
                                  <div class="position-relative">
-                                      <input type="search" class="form-control" placeholder="admin,widgets..."
-                                           autocomplete="off" value="">
+                                      <input type="search" class="form-control" id="searchInput" placeholder="Search..."
+                                           autocomplete="off">
                                       <iconify-icon icon="solar:magnifer-outline" class="search-widget-icon"></iconify-icon>
                                  </div>
                             </form>
