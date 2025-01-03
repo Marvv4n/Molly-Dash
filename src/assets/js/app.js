@@ -1,15 +1,50 @@
-// Avatar Upload Modal
+/// Avatar Upload Modal
 function openAvatarUpload() {
     const modal = document.getElementById('avatarUploadModal');
     document.body.classList.add('modal-open');
     if (modal) {
         modal.style.display = 'block';
         modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
     }
 }
 
 function closeAvatarUpload() {
     const modal = document.getElementById('avatarUploadModal');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+    }
+}
+
+async function handleAvatarUpload(event) {
+    event.preventDefault();
+    const fileInput = document.getElementById('avatarFile');
+    const file = fileInput.files[0];
+    
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+        const response = await fetch('/api/upload-avatar', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            closeAvatarUpload();
+            // Optionally update avatar display
+            console.log('Avatar uploaded successfully:', data);
+        }
+    } catch (error) {
+        console.error('Error uploading avatar:', error);
+    }
+}rUploadModal');
     document.body.classList.remove('modal-open');
     if (modal) {
         modal.style.display = 'none';
