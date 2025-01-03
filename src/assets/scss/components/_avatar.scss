@@ -57,3 +57,30 @@
         border-radius: 50%;
     }
 }
+
+// Avatar upload styles
+.avatar-preview {
+  .avatar-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 2px dashed var(--#{$prefix}border-color);
+    margin: 0 auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--#{$prefix}light);
+    
+    .preview-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .upload-placeholder {
+      color: var(--#{$prefix}gray-500);
+      font-size: 2rem;
+    }
+  }
+}
