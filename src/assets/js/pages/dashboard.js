@@ -1,3 +1,14 @@
+
+// Toggle numbers function
+function toggleNumbers() {
+    showNumbers = !showNumbers;
+    chart.updateOptions({
+        dataLabels: {
+            enabled: showNumbers
+        }
+    });
+}
+
 /**
  * Theme: Taplox- Responsive Bootstrap 5 Admin Dashboard
  * Module/App: Dashboard
@@ -197,16 +208,6 @@ class VectorMap {
                 { name: "United States", coords: [37.0902, -95.7129] }
             ],
             markerStyle: {
-
-// Toggle numbers function
-function toggleNumbers() {
-    showNumbers = !showNumbers;
-    chart.updateOptions({
-        dataLabels: {
-            enabled: showNumbers
-        }
-    });
-}
 
 // Improved timespan handlers
 function updateChartTimespan(period) {
