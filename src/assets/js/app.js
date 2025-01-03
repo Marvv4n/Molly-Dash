@@ -1,42 +1,38 @@
-
-// Avatar upload modal
+// Avatar Upload Modal
 function openAvatarUpload() {
-  const modal = document.getElementById('avatarUploadModal');
-  if (modal) {
-    modal.style.display = 'block';
-  }
+    const modal = document.getElementById('avatarUploadModal');
+    document.body.classList.add('modal-open');
+    if (modal) {
+        modal.style.display = 'block';
+        modal.classList.add('show');
+    }
 }
 
 function closeAvatarUpload() {
-  const modal = document.getElementById('avatarUploadModal');
-  if (modal) {
-    modal.style.display = 'none';
-  }
+    const modal = document.getElementById('avatarUploadModal');
+    document.body.classList.remove('modal-open');
+    if (modal) {
+        modal.style.display = 'none';
+        modal.classList.remove('show');
+    }
 }
 
-// Handle avatar upload
+// Handle file upload
 function handleAvatarUpload(event) {
-  event.preventDefault();
-  const fileInput = document.getElementById('avatarFile');
-  const file = fileInput.files[0];
-  
-  if (file) {
-    const formData = new FormData();
-    formData.append('avatar', file);
-    
-    // Here you would make an API call to upload the file
-    // For now, let's just update the avatar preview
-    const userAvatar = document.querySelector('.topbar-item img.rounded-circle');
-    if (userAvatar) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        userAvatar.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+    event.preventDefault();
+    const fileInput = document.getElementById('avatarFile');
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const userAvatar = document.querySelector('.user-profile-image');
+            if (userAvatar) {
+                userAvatar.src = e.target.result;
+            }
+        };
+        reader.readAsDataURL(file);
     }
-  }
-  
-  closeAvatarUpload();
+    closeAvatarUpload();
 }
 
 /**
