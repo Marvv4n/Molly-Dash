@@ -10,7 +10,10 @@
      white-space: nowrap;
      transition: all 0.3s ease-in-out;
      line-height: $topbar-height;
-     padding: 0 calc($sidebar-width-sm * 0.5 - $logo-sm-height * 0.5);
+
+     // Adjust padding for further left movement
+     margin-left: -2px; // Move an additional 20px to the left
+
 
      .logo-sm {
           display: none;
@@ -29,6 +32,7 @@
           display: block;
      }
 }
+
 
 
 // Main Nav

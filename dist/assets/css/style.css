@@ -15213,7 +15213,7 @@ html[data-sidebar-size=hidden] .app-topbar {
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   line-height: var(--taplox-topbar-height);
-  padding: 0 calc(var(--taplox-sidebar-width-sm) * 0.5 - var(--taplox-logo-sm-height) * 0.5);
+  margin-left: -2px;
 }
 .logo-box .logo-sm {
   display: none;

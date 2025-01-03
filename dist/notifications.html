@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+     <head>
+          <meta charset="utf-8" />
+          <title>Notifications | Taplox</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <link rel="shortcut icon" href="assets/images/favicon.ico" />
+          <script src="assets/js/config.js"></script>
+          <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+     </head>
+     <body>
+          <div class="app-wrapper">
+               <div id="notificationsList"></div>
+          </div>
+          <script src="assets/js/app.js"></script>
+          <script>
+               document.addEventListener('DOMContentLoaded', function() {
+                    const notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+                    const notificationsList = document.getElementById('notificationsList');
+                    
+                    if (notifications.length === 0) {
+                         notificationsList.innerHTML = '<div class="text-center p-4">No notifications</div>';
+                    } else {
+                         notifications.forEach(notification => {
+                              const notificationEl = document.createElement('div');
+                              notificationEl.className = 'dropdown-item p-2 border-bottom';
+                              notificationEl.innerHTML = notification;
+                              notificationsList.appendChild(notificationEl);
+                         });
+                    }
+               });
+          </script>
+     </body>
+</html>
