@@ -18,7 +18,7 @@ var options = {
         data: [8, 12, 7, 17, 21, 11, 5, 9, 7, 29, 12, 35],
     },
     {
-        name: "Conversion Ratio",
+        name: "Conversion Ratio", 
         type: "area",
         data: [12, 16, 11, 22, 28, 25, 15, 29, 35, 45, 42, 48],
     }
@@ -27,8 +27,28 @@ var options = {
         height: 313,
         type: "line",
         toolbar: {
-            show: false,
+            show: true,
+            tools: {
+                download: true,
+                selection: true,
+                zoom: true,
+                zoomin: true,
+                zoomout: true,
+                pan: true,
+                reset: true
+            },
+            autoSelected: 'zoom'
         },
+        zoom: {
+            enabled: true,
+            type: 'x'
+        }
+    },
+    dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+            return val.toFixed(1) + "%"
+        }
     },
     stroke: {
         dashArray: [0, 0, 2],
@@ -197,6 +217,63 @@ class VectorMap {
 
 }
 
+// Time span selector function
+function updateChartTimespan(period) {
+    let data = [];
+    const now = new Date();
+    
+    switch(period) {
+        case '1M':
+            data = getDailyData(30);
+            break;
+        case '6M':
+            data = getMonthlyData(6);
+            break;
+        case '1Y':
+            data = getMonthlyData(12);
+            break;
+        default:
+            data = getAllData();
+    }
+    
+    chart.updateSeries([{
+        name: 'Page Views',
+        data: data.pageViews
+    }, {
+        name: 'Clicks',
+        data: data.clicks
+    }, {
+        name: 'Conversion Ratio',
+        data: data.conversion
+    }]);
+}
+
 document.addEventListener('DOMContentLoaded', function (e) {
     new VectorMap().init();
+    
+    // Add event listeners for timespan buttons
+    document.querySelectorAll('.btn-outline-light').forEach(button => {
+        button.addEventListener('click', (e) => {
+            updateChartTimespan(e.target.textContent.trim());
+        });
+    });
 });
+
+// Dummy data functions (replace with your actual data fetching logic)
+function getDailyData(days) {
+    const pageViews = Array.from({length: days}, () => Math.floor(Math.random() * 100));
+    const clicks = Array.from({length: days}, () => Math.floor(Math.random() * 50));
+    const conversion = Array.from({length: days}, () => Math.floor(Math.random() * 40));
+    return { pageViews, clicks, conversion };
+}
+
+function getMonthlyData(months) {
+    const pageViews = Array.from({length: months}, () => Math.floor(Math.random() * 1000));
+    const clicks = Array.from({length: months}, () => Math.floor(Math.random() * 500));
+    const conversion = Array.from({length: months}, () => Math.floor(Math.random() * 400));
+    return { pageViews, clicks, conversion };
+}
+
+function getAllData() {
+    return getMonthlyData(12); // Or fetch from your data source
+}
