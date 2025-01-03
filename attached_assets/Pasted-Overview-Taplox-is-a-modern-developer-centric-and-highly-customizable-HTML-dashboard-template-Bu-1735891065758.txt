@@ -1,0 +1,51 @@
+Overview
+Taplox is a modern, developer-centric, and highly customizable HTML dashboard template. Built on Bootstrap 5, HTML5, SCSS, and jQuery, it features a fully responsive layout and an intuitive interface. With a vast library of components, widgets, and UI elements, Taplox accelerates project development, saving valuable time and resources. Perfect for SaaS interfaces, admin dashboards, or any other web application, Taplox streamlines your workflow.
+
+Your feedback is invaluable to us. Please don’t hesitate to reach out with any comments, questions, or suggestions.
+
+Project Structure
+We’ve organized the project using best practices to ensure clarity and scalability. Below is an overview of the folder and file structure, along with an explanation of key files and tools.
+
+Folder Organization
+Taplox
+├── dist (Compiled and ready to deploy)
+├── src (Development files)
+│   ├── assets/
+│   │   ├── css/
+│   │   ├── fonts/
+│   │   ├── images/
+│   │   ├── js/
+│   │   └── scss/
+│   └── partials (Reusable components)
+│   └── All HTML files
+├── gulpfile.js (Build configuration)
+├── package.json (Dependencies list)
+└── yarn.lock (Dependency lock file)
+Code Structure
+
+CSS Files
+The following are the primary CSS files included:
+
+File Name	Description
+icons.min.css	Includes various font icons. Remove unused fonts for optimization.
+style.min.css	The main stylesheet combining all styles, including Bootstrap v5.3.3.
+Setup Guide
+We use Gulp to simplify the development process. It automates repetitive tasks, allowing you to focus on coding. Learn more about Gulp here.
+
+Prerequisites
+Node.js: Install Node.js to manage dependencies.
+Gulp: Install globally using npm install -g gulp@4.0.2.
+Git: Download and install Git.
+Installation
+Step 1: Ensure all prerequisites are installed and running.
+Step 2: Use npm install or yarn to install project dependencies.
+After installation, use these commands:
+
+Command	Description
+yarn	Generate node-module package folder
+gulp	Starts a local server at http://localhost:3000 for development.
+gulp build	Generates a production-ready build optimized for performance.
+Acknowledgments
+We would like to thank the creators of the following resources for their contributions:
+
+Bootstrap
