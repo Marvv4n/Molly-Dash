@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { createVar } from '@shopify/polaris-tokens';
 import { classNames } from '../../utilities/css.js';
 import styles from './Collapsible.css.js';
 
@@ -6,29 +7,36 @@ function Collapsible({
   id,
   expandOnPrint,
   open,
+  variant = 'block',
   transition = true,
   children,
   onAnimationEnd
 }) {
-  const [height, setHeight] = useState(0);
+  const [size, setSize] = useState(0);
   const [isOpen, setIsOpen] = useState(open);
-  const [animationState, setAnimationState] = useState('idle');
   const collapsibleContainer = useRef(null);
+  const animateIn = typeof transition === 'object' && transition.animateIn;
+  const [animationState, setAnimationState] = useState(animateIn ? 'measuring' : 'idle');
   const isFullyOpen = animationState === 'idle' && open && isOpen;
   const isFullyClosed = animationState === 'idle' && !open && !isOpen;
   const content = expandOnPrint || !isFullyClosed ? children : null;
-  const wrapperClassName = classNames(styles.Collapsible, isFullyClosed && styles.isFullyClosed, expandOnPrint && styles.expandOnPrint);
+  const vertical = variant === 'block';
+  const wrapperClassName = classNames(styles.Collapsible, isFullyClosed && styles.isFullyClosed, expandOnPrint && styles.expandOnPrint, variant === 'inline' && styles.inline, animateIn && styles.animateIn);
   const transitionDisabled = isTransitionDisabled(transition);
   const transitionStyles = typeof transition === 'object' && {
+    transitionDelay: createVar(`motion-duration-${transition.delay ?? '0'}`),
     transitionDuration: transition.duration,
     transitionTimingFunction: transition.timingFunction
   };
   const collapsibleStyles = {
     ...transitionStyles,
-    ...{
-      maxHeight: isFullyOpen ? 'none' : `${height}px`,
+    ...(vertical ? {
+      maxHeight: isFullyOpen ? 'none' : `${size}px`,
       overflow: isFullyOpen ? 'visible' : 'hidden'
-    }
+    } : {
+      maxWidth: isFullyOpen ? 'none' : `${size}px`,
+      overflow: isFullyOpen ? 'visible' : 'hidden'
+    })
   };
   const handleCompleteAnimation = useCallback(({
     target
@@ -44,14 +52,14 @@ function Collapsible({
       setIsOpen(open);
       setAnimationState('idle');
       if (open && collapsibleContainer.current) {
-        setHeight(collapsibleContainer.current.scrollHeight);
+        setSize(vertical ? collapsibleContainer.current.scrollHeight : collapsibleContainer.current.scrollWidth);
       } else {
-        setHeight(0);
+        setSize(0);
       }
     } else {
       setAnimationState('measuring');
     }
-  }, [open, transitionDisabled]);
+  }, [open, vertical, transitionDisabled]);
   useEffect(() => {
     if (open !== isOpen) {
       startAnimation();
@@ -62,7 +70,7 @@ function Collapsible({
   useEffect(() => {
     if (!open || !collapsibleContainer.current) return;
     // If collapsible defaults to open, set an initial height
-    setHeight(collapsibleContainer.current.scrollHeight);
+    setSize(vertical ? collapsibleContainer.current.scrollHeight : collapsibleContainer.current.scrollWidth);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
@@ -71,13 +79,15 @@ function Collapsible({
       case 'idle':
         break;
       case 'measuring':
-        setHeight(collapsibleContainer.current.scrollHeight);
+        setSize(vertical ? collapsibleContainer.current.scrollHeight : collapsibleContainer.current.scrollWidth);
         setAnimationState('animating');
         break;
       case 'animating':
-        setHeight(open ? collapsibleContainer.current.scrollHeight : 0);
+        setSize(
+        // eslint-disable-next-line no-nested-ternary
+        open ? vertical ? collapsibleContainer.current.scrollHeight : collapsibleContainer.current.scrollWidth : 0);
     }
-  }, [animationState, open, isOpen]);
+  }, [animationState, vertical, open, isOpen]);
   return /*#__PURE__*/React.createElement("div", {
     id: id,
     style: collapsibleStyles,

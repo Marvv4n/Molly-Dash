@@ -1,5 +1,4 @@
-
-modules = ["nodejs-20:v20-20231219-1c8b42c"]
+modules = ["web", "nodejs-20"]
 run = "gulp"
 
 [nix]

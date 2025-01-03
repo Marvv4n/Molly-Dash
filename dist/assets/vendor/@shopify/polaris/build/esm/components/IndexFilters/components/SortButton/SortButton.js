@@ -8,16 +8,17 @@ import { Button } from '../../../Button/Button.js';
 import { Popover } from '../../../Popover/Popover.js';
 import { Box } from '../../../Box/Box.js';
 
-let SortButtonDirection;
-(function (SortButtonDirection) {
+let SortButtonDirection = /*#__PURE__*/function (SortButtonDirection) {
   SortButtonDirection["Asc"] = "asc";
   SortButtonDirection["Desc"] = "desc";
-})(SortButtonDirection || (SortButtonDirection = {}));
+  return SortButtonDirection;
+}({});
 function SortButton({
   choices,
   selected,
-  onChange,
   disabled,
+  disclosureZIndexOverride,
+  onChange,
   onChangeKey,
   onChangeDirection
 }) {
@@ -73,7 +74,8 @@ function SortButton({
   const sortButton = /*#__PURE__*/React.createElement(Tooltip, {
     content: i18n.translate('Polaris.IndexFilters.SortButton.tooltip'),
     preferredPosition: "above",
-    hoverDelay: 400
+    hoverDelay: 400,
+    zIndexOverride: disclosureZIndexOverride
   }, /*#__PURE__*/React.createElement(Button, {
     size: "slim",
     icon: SortIcon,
@@ -82,12 +84,13 @@ function SortButton({
     accessibilityLabel: i18n.translate('Polaris.IndexFilters.SortButton.ariaLabel')
   }));
   return /*#__PURE__*/React.createElement(Popover, {
+    fluidContent: true,
     active: active && !disabled,
     activator: sortButton,
     autofocusTarget: "first-node",
     onClose: handleClose,
     preferredAlignment: "right",
-    fluidContent: true
+    zIndexOverride: disclosureZIndexOverride
   }, /*#__PURE__*/React.createElement(Box, {
     minWidth: "148px",
     paddingInlineStart: "300",

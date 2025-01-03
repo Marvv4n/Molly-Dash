@@ -2,14 +2,14 @@
 
 var React = require('react');
 
-exports.SelectionType = void 0;
-(function (SelectionType) {
+let SelectionType = /*#__PURE__*/function (SelectionType) {
   SelectionType["All"] = "all";
   SelectionType["Page"] = "page";
   SelectionType["Multi"] = "multi";
   SelectionType["Single"] = "single";
   SelectionType["Range"] = "range";
-})(exports.SelectionType || (exports.SelectionType = {}));
+  return SelectionType;
+}({});
 function defaultResourceIDResolver(resource) {
   if ('id' in resource) {
     return resource.id;
@@ -30,17 +30,17 @@ function useIndexResourceState(resources, {
   const [selectedResources, setSelectedResources] = React.useState(initSelectedResources);
   const [allResourcesSelected, setAllResourcesSelected] = React.useState(initAllResourcesSelected);
   const handleSelectionChange = React.useCallback((selectionType, isSelecting, selection, _position) => {
-    if (selectionType === exports.SelectionType.All) {
+    if (selectionType === SelectionType.All) {
       setAllResourcesSelected(isSelecting);
     } else if (allResourcesSelected) {
       setAllResourcesSelected(false);
     }
     switch (selectionType) {
-      case exports.SelectionType.Single:
+      case SelectionType.Single:
         setSelectedResources(newSelectedResources => isSelecting ? [...newSelectedResources, selection] : newSelectedResources.filter(id => id !== selection));
         break;
-      case exports.SelectionType.All:
-      case exports.SelectionType.Page:
+      case SelectionType.All:
+      case SelectionType.Page:
         if (resourceFilter) {
           const filteredResources = resources.filter(resourceFilter);
           setSelectedResources(isSelecting && selectedResources.length < filteredResources.length ? filteredResources.map(resourceIDResolver) : []);
@@ -48,7 +48,7 @@ function useIndexResourceState(resources, {
           setSelectedResources(isSelecting ? resources.map(resourceIDResolver) : []);
         }
         break;
-      case exports.SelectionType.Multi:
+      case SelectionType.Multi:
         if (!selection) break;
         setSelectedResources(currentSelectedResources => {
           const ids = [];
@@ -64,7 +64,7 @@ function useIndexResourceState(resources, {
           return isSelecting ? [...currentSelectedResources, ...ids] : currentSelectedResources.filter(id => !ids.includes(id));
         });
         break;
-      case exports.SelectionType.Range:
+      case SelectionType.Range:
         if (!selection) break;
         setSelectedResources(currentSelectedResources => {
           const filteredResources = resourceFilter ? resources.filter(resourceFilter) : resources;
@@ -104,4 +104,5 @@ function useIndexResourceState(resources, {
   };
 }
 
+exports.SelectionType = SelectionType;
 exports.useIndexResourceState = useIndexResourceState;

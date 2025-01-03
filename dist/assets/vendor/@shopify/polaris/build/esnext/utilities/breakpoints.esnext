@@ -21,10 +21,10 @@ const noWindowMatches = {
 };
 function noop() {}
 function navigationBarCollapsed() {
-  return typeof window === 'undefined' ? noWindowMatches : window.matchMedia(`(max-width: ${Breakpoints.navigationBarCollapsed})`);
+  return isServer ? noWindowMatches : window.matchMedia(`(max-width: ${Breakpoints.navigationBarCollapsed})`);
 }
 function stackedContent() {
-  return typeof window === 'undefined' ? noWindowMatches : window.matchMedia(`(max-width: ${Breakpoints.stackedContent})`);
+  return isServer ? noWindowMatches : window.matchMedia(`(max-width: ${Breakpoints.stackedContent})`);
 }
 
 /**
@@ -37,20 +37,28 @@ function stackedContent() {
  * Match results for each directional Polaris `breakpoints` alias.
  */
 
+const hookCallbacks = new Set();
 const breakpointsQueryEntries = getBreakpointsQueryEntries(themeDefault.breakpoints);
-function getMatches(defaults,
-/**
- * Used to force defaults on initial client side render so they match SSR
- * values and hence avoid a Hydration error.
- */
-forceDefaults) {
-  if (!isServer && !forceDefaults) {
-    return Object.fromEntries(breakpointsQueryEntries.map(([directionAlias, query]) => [directionAlias, window.matchMedia(query).matches]));
-  }
-  if (typeof defaults === 'object' && defaults !== null) {
-    return Object.fromEntries(breakpointsQueryEntries.map(([directionAlias]) => [directionAlias, defaults[directionAlias] ?? false]));
-  }
-  return Object.fromEntries(breakpointsQueryEntries.map(([directionAlias]) => [directionAlias, defaults ?? false]));
+if (!isServer) {
+  breakpointsQueryEntries.forEach(([breakpointAlias, query]) => {
+    const eventListener = event => {
+      for (const hookCallback of hookCallbacks) {
+        hookCallback(breakpointAlias, event.matches);
+      }
+    };
+    const mql = window.matchMedia(query);
+    if (mql.addListener) {
+      mql.addListener(eventListener);
+    } else {
+      mql.addEventListener('change', eventListener);
+    }
+  });
+}
+function getDefaultMatches(defaults) {
+  return Object.fromEntries(breakpointsQueryEntries.map(([directionAlias]) => [directionAlias, typeof defaults === 'boolean' ? defaults : defaults?.[directionAlias] ?? false]));
+}
+function getLiveMatches() {
+  return Object.fromEntries(breakpointsQueryEntries.map(([directionAlias, query]) => [directionAlias, window.matchMedia(query).matches]));
 }
 /**
  * Retrieves media query matches for each directional Polaris `breakpoints` alias.
@@ -72,29 +80,22 @@ function useBreakpoints(options) {
   // hydration mismatch error.
   // Later, in the effect, we will call this again on the client side without
   // any defaults to trigger a more accurate client side evaluation.
-  const [breakpoints, setBreakpoints] = useState(getMatches(options?.defaults, true));
+  const [breakpoints, setBreakpoints] = useState(getDefaultMatches(options?.defaults));
   useIsomorphicLayoutEffect(() => {
-    const mediaQueryLists = breakpointsQueryEntries.map(([_, query]) => window.matchMedia(query));
-    const handler = () => setBreakpoints(getMatches());
-    mediaQueryLists.forEach(mql => {
-      if (mql.addListener) {
-        mql.addListener(handler);
-      } else {
-        mql.addEventListener('change', handler);
-      }
-    });
+    // Now that we're client side, get the real values
+    setBreakpoints(getLiveMatches());
 
-    // Trigger the breakpoint recalculation at least once client-side to ensure
-    // we don't have stale default values from SSR.
-    handler();
+    // Register a callback to set the breakpoints object whenever there's a
+    // change in the future
+    const callback = (breakpointAlias, matches) => {
+      setBreakpoints(prevBreakpoints => ({
+        ...prevBreakpoints,
+        [breakpointAlias]: matches
+      }));
+    };
+    hookCallbacks.add(callback);
     return () => {
-      mediaQueryLists.forEach(mql => {
-        if (mql.removeListener) {
-          mql.removeListener(handler);
-        } else {
-          mql.removeEventListener('change', handler);
-        }
-      });
+      hookCallbacks.delete(callback);
     };
   }, []);
   return breakpoints;

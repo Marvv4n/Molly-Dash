@@ -78,7 +78,6 @@ function VideoThumbnail({
     }, progressValuePercents, "%")));
     /* eslint-enable @shopify/jsx-no-hardcoded-content */
   }
-
   return /*#__PURE__*/React.createElement("div", {
     className: VideoThumbnail_module.default.ThumbnailContainer
   }, /*#__PURE__*/React.createElement("div", {

@@ -24,6 +24,7 @@ function FilterPill({
   hideClearButton,
   selected,
   initialActive,
+  disclosureZIndexOverride,
   closeOnChildOverlayClick,
   onRemove,
   onClick
@@ -140,6 +141,7 @@ function FilterPill({
     key: filterKey,
     onClose: handlePopoverClose,
     preferredAlignment: "left",
+    zIndexOverride: disclosureZIndexOverride,
     preventCloseOnChildOverlayClick: !closeOnChildOverlayClick
   }, /*#__PURE__*/React.createElement("div", {
     className: FilterPill_module.default.PopoverWrapper

@@ -277,6 +277,7 @@ class DataTableInner extends PureComponent {
       };
       return handleScroll;
     };
+    // eslint-disable-next-line @shopify/react-no-multiple-render-methods
     this.renderHeading = ({
       heading,
       headingIndex,
@@ -393,6 +394,7 @@ class DataTableInner extends PureComponent {
       };
       return totals && totals.filter(total => total !== '').length > 1 ? totalsLabel.plural : totalsLabel.singular;
     };
+    // eslint-disable-next-line @shopify/react-no-multiple-render-methods
     this.renderTotals = ({
       total,
       index
@@ -692,12 +694,7 @@ class DataTableInner extends PureComponent {
     }
     return numberOfFixedFirstColumns;
   }
-
-  // eslint-disable-next-line @shopify/react-no-multiple-render-methods
-
-  // eslint-disable-next-line @shopify/react-no-multiple-render-methods
 }
-
 function DataTable(props) {
   const i18n = useI18n();
   return /*#__PURE__*/React.createElement(DataTableInner, Object.assign({}, props, {

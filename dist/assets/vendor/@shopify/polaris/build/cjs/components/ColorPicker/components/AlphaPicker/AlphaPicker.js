@@ -13,8 +13,18 @@ class AlphaPicker extends React.PureComponent {
       sliderHeight: 0,
       draggerHeight: 0
     };
-    this.setSliderHeight = node => {
-      if (node == null) {
+    this.node = null;
+    this.setNode = node => {
+      if (!node) {
+        return;
+      }
+      this.node = node;
+    };
+    this.setSliderHeight = () => {
+      const {
+        node
+      } = this;
+      if (!node) {
         return;
       }
       this.setState({
@@ -46,6 +56,17 @@ class AlphaPicker extends React.PureComponent {
       onChange(alpha);
     };
   }
+  componentWillUnmount() {
+    this.observer?.disconnect();
+  }
+  componentDidMount() {
+    if (!this.node) {
+      return;
+    }
+    this.observer = new ResizeObserver(this.setSliderHeight);
+    this.observer.observe(this.node);
+    this.setSliderHeight();
+  }
   render() {
     const {
       color,
@@ -59,7 +80,7 @@ class AlphaPicker extends React.PureComponent {
     const background = alphaGradientForColor(color);
     return /*#__PURE__*/React.createElement("div", {
       className: ColorPicker_module.default.AlphaPicker,
-      ref: this.setSliderHeight
+      ref: this.setNode
     }, /*#__PURE__*/React.createElement("div", {
       className: ColorPicker_module.default.ColorLayer,
       style: {

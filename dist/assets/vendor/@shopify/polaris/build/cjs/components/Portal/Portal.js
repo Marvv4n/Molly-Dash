@@ -21,7 +21,7 @@ function Portal({
   React.useEffect(() => {
     onPortalCreated();
   }, [onPortalCreated]);
-  return container ? /*#__PURE__*/reactDom.createPortal( /*#__PURE__*/React.createElement(ThemeProvider.ThemeProvider, {
+  return container ? /*#__PURE__*/reactDom.createPortal(/*#__PURE__*/React.createElement(ThemeProvider.ThemeProvider, {
     theme: ThemeProvider.isThemeNameLocal(themeName) ? themeName : polarisTokens.themeNameDefault,
     "data-portal-id": portalId
   }, children), container) : null;

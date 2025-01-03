@@ -17,7 +17,8 @@ const Activator = /*#__PURE__*/forwardRef(({
     ref: ref,
     disabled: disabled,
     onClick: onClick,
-    className: classNames(styles.Activator, disabled && styles.disabled)
+    className: classNames(styles.Activator, disabled && styles.disabled),
+    type: "button"
   }, /*#__PURE__*/React.createElement(BlockStack, {
     as: "span",
     gap: "100"

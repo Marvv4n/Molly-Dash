@@ -31,7 +31,7 @@ function PolarisTestProvider({
   i18n,
   link,
   mediaQuery,
-  features,
+  features = {},
   frame,
   theme: themeName = themeNameDefault
 }) {
@@ -69,6 +69,8 @@ function createFrameContext({
   toastMessages = [],
   setContextualSaveBar = noop,
   removeContextualSaveBar = noop,
+  contextualSaveBarVisible = false,
+  contextualSaveBarProps = {},
   startLoading = noop,
   stopLoading = noop
 } = {}) {
@@ -79,6 +81,8 @@ function createFrameContext({
     toastMessages,
     setContextualSaveBar,
     removeContextualSaveBar,
+    contextualSaveBarVisible,
+    contextualSaveBarProps,
     startLoading,
     stopLoading
   };

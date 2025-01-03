@@ -6,9 +6,9 @@ var css = require('../../utilities/css.js');
 var SelectAllActions_module = require('./SelectAllActions.css.js');
 var UnstyledButton = require('../UnstyledButton/UnstyledButton.js');
 var Text = require('../Text/Text.js');
-var CheckableButton = require('../CheckableButton/CheckableButton.js');
 var Box = require('../Box/Box.js');
 var InlineStack = require('../InlineStack/InlineStack.js');
+var CheckableButton = require('../CheckableButton/CheckableButton.js');
 
 /**
  * @deprecated Use `BulkActions` instead.

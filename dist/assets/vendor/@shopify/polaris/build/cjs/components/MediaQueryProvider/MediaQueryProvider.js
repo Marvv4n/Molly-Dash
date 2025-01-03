@@ -9,7 +9,7 @@ var EventListener = require('../EventListener/EventListener.js');
 const MediaQueryProvider = function MediaQueryProvider({
   children
 }) {
-  const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(breakpoints.navigationBarCollapsed().matches);
+  const [isNavigationCollapsed, setIsNavigationCollapsed] = React.useState(false);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleResize = React.useCallback(debounce.debounce(() => {

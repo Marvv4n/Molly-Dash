@@ -1,12 +1,12 @@
 'use strict';
 
-var EditableTarget;
-(function (EditableTarget) {
+var EditableTarget = /*#__PURE__*/function (EditableTarget) {
   EditableTarget["Input"] = "INPUT";
   EditableTarget["Textarea"] = "TEXTAREA";
   EditableTarget["Select"] = "SELECT";
   EditableTarget["ContentEditable"] = "contenteditable";
-})(EditableTarget || (EditableTarget = {}));
+  return EditableTarget;
+}(EditableTarget || {});
 function isInputFocused() {
   if (document == null || document.activeElement == null) {
     return false;

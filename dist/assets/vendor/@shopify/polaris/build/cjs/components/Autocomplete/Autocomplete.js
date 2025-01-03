@@ -13,6 +13,7 @@ var hooks = require('../../utilities/i18n/hooks.js');
 // subcomponents so explicitly state the subcomponents in the type definition.
 // Letting this be implicit works in this project but fails in projects that use
 // generated *.d.ts files.
+
 const Autocomplete = function Autocomplete({
   options: options$1,
   selected,

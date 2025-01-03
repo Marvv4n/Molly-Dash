@@ -2,6 +2,7 @@ import './Frame.out.css';
 
 var styles = {
   "Frame": "Polaris-Frame_2qi9y",
+  "ScrollbarAlwaysVisible": "Polaris-Frame__ScrollbarAlwaysVisible_3bbj5",
   "Navigation": "Polaris-Frame__Navigation_1ajsq",
   "hasTopBar": "Polaris-Frame--hasTopBar_1162r",
   "Navigation-enter": "Polaris-Frame__Navigation--enter_145tn",

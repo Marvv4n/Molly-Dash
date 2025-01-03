@@ -1,5 +1,4 @@
-let ToneValue;
-(function (ToneValue) {
+let ToneValue = /*#__PURE__*/function (ToneValue) {
   ToneValue["Info"] = "info";
   ToneValue["Success"] = "success";
   ToneValue["Warning"] = "warning";
@@ -14,12 +13,13 @@ let ToneValue;
   ToneValue["AttentionStrong"] = "attention-strong";
   ToneValue["ReadOnly"] = "read-only";
   ToneValue["Enabled"] = "enabled";
-})(ToneValue || (ToneValue = {}));
-let ProgressValue;
-(function (ProgressValue) {
+  return ToneValue;
+}({});
+let ProgressValue = /*#__PURE__*/function (ProgressValue) {
   ProgressValue["Incomplete"] = "incomplete";
   ProgressValue["PartiallyComplete"] = "partiallyComplete";
   ProgressValue["Complete"] = "complete";
-})(ProgressValue || (ProgressValue = {}));
+  return ProgressValue;
+}({});
 
 export { ProgressValue, ToneValue };

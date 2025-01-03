@@ -6,6 +6,7 @@ import { SingleThumb } from './components/SingleThumb/SingleThumb.js';
 // that the interface defining the props is defined in this file, not imported
 // from elsewhere. This silly workaround ensures that the Props Explorer table
 // is generated correctly.
+
 function RangeSlider({
   min = 0,
   max = 100,

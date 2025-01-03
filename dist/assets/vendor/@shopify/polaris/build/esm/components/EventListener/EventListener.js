@@ -23,8 +23,10 @@ class EventListener extends PureComponent {
       event,
       handler,
       capture,
-      passive
+      passive,
+      window: customWindow
     } = this.props;
+    const window = customWindow || globalThis.window;
     window.addEventListener(event, handler, {
       capture,
       passive
@@ -34,8 +36,10 @@ class EventListener extends PureComponent {
     const {
       event,
       handler,
-      capture
+      capture,
+      window: customWindow
     } = prevProps || this.props;
+    const window = customWindow || globalThis.window;
     window.removeEventListener(event, handler, capture);
   }
 }

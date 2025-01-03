@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { classNames } from '../../utilities/css.esnext';
 import styles from './EmptyState.css.esnext';
 import { buttonFrom } from '../Button/utils.esnext';
@@ -20,13 +20,15 @@ function EmptyState({
   footerContent
 }) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const handleLoad = useCallback(() => {
-    setImageLoaded(true);
+  const imageRef = useRef(null);
+  useEffect(() => {
+    if (imageRef.current?.complete) setImageLoaded(true);
   }, []);
   const imageClassNames = classNames(styles.Image, imageLoaded && styles.loaded, imageContained && styles.imageContained);
   const loadedImageMarkup = largeImage ? /*#__PURE__*/React.createElement(Image, {
     alt: "",
     role: "presentation",
+    ref: imageRef,
     source: largeImage,
     className: imageClassNames,
     sourceSet: [{
@@ -37,13 +39,14 @@ function EmptyState({
       descriptor: '1136w'
     }],
     sizes: "(max-width: 568px) 60vw",
-    onLoad: handleLoad
+    onLoad: () => setImageLoaded(true)
   }) : /*#__PURE__*/React.createElement(Image, {
     alt: "",
     role: "presentation",
+    ref: imageRef,
     className: imageClassNames,
     source: image,
-    onLoad: handleLoad
+    onLoad: () => setImageLoaded(true)
   });
   const skeletonImageClassNames = classNames(styles.SkeletonImage, imageLoaded && styles.loaded);
   const imageContainerClassNames = classNames(styles.ImageContainer, !imageLoaded && styles.SkeletonImageContainer);

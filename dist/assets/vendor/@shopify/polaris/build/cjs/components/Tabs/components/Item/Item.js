@@ -15,8 +15,11 @@ const Item = /*#__PURE__*/React.memo(function Item({
 }) {
   const focusedNode = React.useRef(null);
   React.useEffect(() => {
-    if (focusedNode.current && focusedNode.current instanceof HTMLElement && focused) {
-      focusedNode.current.focus();
+    const focusTarget = focusedNode.current;
+    if (focusTarget && focusTarget instanceof HTMLElement && focused) {
+      requestAnimationFrame(() => {
+        focusTarget.focus();
+      });
     }
   }, [focusedNode, focused]);
   const classname = css.classNames(Tabs_module.default.Item);
