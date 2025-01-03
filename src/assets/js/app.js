@@ -1,3 +1,22 @@
+
+function handleSearch(e) {
+    e.preventDefault();
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const content = document.querySelector('.page-content');
+    const elements = content.querySelectorAll('*');
+    
+    elements.forEach(element => {
+        if (element.textContent.toLowerCase().includes(searchTerm)) {
+            element.style.backgroundColor = '#fff3cd';
+            setTimeout(() => {
+                element.style.backgroundColor = '';
+            }, 2000);
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    });
+}
+
+
 /**
 * Theme: Taplox- Responsive Bootstrap 5 Admin Dashboard
 * Author: Stackbros
