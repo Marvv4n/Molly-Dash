@@ -10,11 +10,11 @@ import { labelID } from '../../../Label/Label.js';
 import { EventListener } from '../../../EventListener/EventListener.js';
 import { FeaturesContext } from '../../../../utilities/features/context.js';
 
-var Control = /*#__PURE__*/function (Control) {
+var Control;
+(function (Control) {
   Control[Control["Lower"] = 0] = "Lower";
   Control[Control["Upper"] = 1] = "Upper";
-  return Control;
-}(Control || {});
+})(Control || (Control = {}));
 class DualThumb extends Component {
   constructor(...args) {
     super(...args);

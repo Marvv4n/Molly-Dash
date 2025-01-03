@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-const Image = /*#__PURE__*/React.forwardRef(({
+function Image({
   alt,
   sourceSet,
   source,
@@ -10,7 +10,7 @@ const Image = /*#__PURE__*/React.forwardRef(({
   onLoad,
   className,
   ...rest
-}, ref) => {
+}) {
   const finalSourceSet = sourceSet ? sourceSet.map(({
     source: subSource,
     descriptor
@@ -19,7 +19,6 @@ const Image = /*#__PURE__*/React.forwardRef(({
     if (onLoad) onLoad();
   }, [onLoad]);
   return /*#__PURE__*/React.createElement("img", Object.assign({
-    ref: ref,
     alt: alt,
     src: source,
     crossOrigin: crossOrigin,
@@ -28,7 +27,6 @@ const Image = /*#__PURE__*/React.forwardRef(({
   }, finalSourceSet ? {
     srcSet: finalSourceSet
   } : {}, rest));
-});
-Image.displayName = 'Image';
+}
 
 exports.Image = Image;

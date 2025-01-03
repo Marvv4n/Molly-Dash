@@ -5,9 +5,9 @@ import { useIsAfterInitialMount } from '../../utilities/use-is-after-initial-mou
 import { Key } from '../../types.js';
 import { useEventListener } from '../../utilities/use-event-listener.js';
 import styles from './TextField.css.js';
+import { Spinner as Spinner$1 } from './components/Spinner/Spinner.js';
 import { Labelled, helpTextID } from '../Labelled/Labelled.js';
 import { Connected } from '../Connected/Connected.js';
-import { Spinner as Spinner$1 } from './components/Spinner/Spinner.js';
 import { Resizer } from './components/Resizer/Resizer.js';
 import { labelID } from '../Label/Label.js';
 import { useI18n } from '../../utilities/i18n/hooks.js';

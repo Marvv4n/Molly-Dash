@@ -26,11 +26,11 @@ var Scrollable = require('../Scrollable/Scrollable.js');
 var KeypressListener = require('../KeypressListener/KeypressListener.js');
 var LegacyStack = require('../LegacyStack/LegacyStack.js');
 
-var Suffix = /*#__PURE__*/function (Suffix) {
+var Suffix;
+(function (Suffix) {
   Suffix["Filter"] = "Filter";
   Suffix["Shortcut"] = "Shortcut";
-  return Suffix;
-}(Suffix || {});
+})(Suffix || (Suffix = {}));
 class LegacyFiltersInner extends React.Component {
   constructor(...args) {
     super(...args);

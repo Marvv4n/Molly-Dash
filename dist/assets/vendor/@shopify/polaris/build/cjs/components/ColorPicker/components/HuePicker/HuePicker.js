@@ -12,18 +12,8 @@ class HuePicker extends React.PureComponent {
       sliderHeight: 0,
       draggerHeight: 0
     };
-    this.node = null;
-    this.setNode = node => {
-      if (!node) {
-        return;
-      }
-      this.node = node;
-    };
-    this.setSliderHeight = () => {
-      const {
-        node
-      } = this;
-      if (!node) {
+    this.setSliderHeight = node => {
+      if (node == null) {
         return;
       }
       this.setState({
@@ -55,17 +45,6 @@ class HuePicker extends React.PureComponent {
       onChange(hue);
     };
   }
-  componentWillUnmount() {
-    this.observer?.disconnect();
-  }
-  componentDidMount() {
-    if (!this.node) {
-      return;
-    }
-    this.observer = new ResizeObserver(this.setSliderHeight);
-    this.observer.observe(this.node);
-    this.setSliderHeight();
-  }
   render() {
     const {
       hue
@@ -77,7 +56,7 @@ class HuePicker extends React.PureComponent {
     const draggerY = utilities.calculateDraggerY(hue, sliderHeight, draggerHeight);
     return /*#__PURE__*/React.createElement("div", {
       className: ColorPicker_module.default.HuePicker,
-      ref: this.setNode
+      ref: this.setSliderHeight
     }, /*#__PURE__*/React.createElement(Slidable.Slidable, {
       draggerY: draggerY,
       draggerX: 0,

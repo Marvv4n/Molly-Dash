@@ -4,9 +4,9 @@ import { classNames } from '../../utilities/css.js';
 import styles from './SelectAllActions.css.js';
 import { UnstyledButton } from '../UnstyledButton/UnstyledButton.js';
 import { Text } from '../Text/Text.js';
+import { CheckableButton } from '../CheckableButton/CheckableButton.js';
 import { Box } from '../Box/Box.js';
 import { InlineStack } from '../InlineStack/InlineStack.js';
-import { CheckableButton } from '../CheckableButton/CheckableButton.js';
 
 /**
  * @deprecated Use `BulkActions` instead.

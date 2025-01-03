@@ -22,15 +22,13 @@ function EmptyState({
   footerContent
 }) {
   const [imageLoaded, setImageLoaded] = React.useState(false);
-  const imageRef = React.useRef(null);
-  React.useEffect(() => {
-    if (imageRef.current?.complete) setImageLoaded(true);
+  const handleLoad = React.useCallback(() => {
+    setImageLoaded(true);
   }, []);
   const imageClassNames = css.classNames(EmptyState_module.default.Image, imageLoaded && EmptyState_module.default.loaded, imageContained && EmptyState_module.default.imageContained);
   const loadedImageMarkup = largeImage ? /*#__PURE__*/React.createElement(Image.Image, {
     alt: "",
     role: "presentation",
-    ref: imageRef,
     source: largeImage,
     className: imageClassNames,
     sourceSet: [{
@@ -41,14 +39,13 @@ function EmptyState({
       descriptor: '1136w'
     }],
     sizes: "(max-width: 568px) 60vw",
-    onLoad: () => setImageLoaded(true)
+    onLoad: handleLoad
   }) : /*#__PURE__*/React.createElement(Image.Image, {
     alt: "",
     role: "presentation",
-    ref: imageRef,
     className: imageClassNames,
     source: image,
-    onLoad: () => setImageLoaded(true)
+    onLoad: handleLoad
   });
   const skeletonImageClassNames = css.classNames(EmptyState_module.default.SkeletonImage, imageLoaded && EmptyState_module.default.loaded);
   const imageContainerClassNames = css.classNames(EmptyState_module.default.ImageContainer, !imageLoaded && EmptyState_module.default.SkeletonImageContainer);

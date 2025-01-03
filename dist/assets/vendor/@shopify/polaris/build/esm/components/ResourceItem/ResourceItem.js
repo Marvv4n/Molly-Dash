@@ -120,7 +120,6 @@ class BaseResourceItem extends Component {
         anchor.click();
       }
     };
-    // This fires onClick when there is a URL on the item
     this.handleKeyUp = event => {
       const {
         disabled,
@@ -344,7 +343,10 @@ class BaseResourceItem extends Component {
       "data-href": url
     }, disabled ? null : accessibleMarkup, containerMarkup)));
   }
+
+  // This fires onClick when there is a URL on the item
 }
+
 function noop() {}
 function stopPropagation(event) {
   event.stopPropagation();

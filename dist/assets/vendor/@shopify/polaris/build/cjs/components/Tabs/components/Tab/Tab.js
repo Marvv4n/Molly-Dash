@@ -38,7 +38,6 @@ const Tab = /*#__PURE__*/React.forwardRef(({
   onTogglePopover,
   viewNames,
   tabIndexOverride,
-  disclosureZIndexOverride,
   onFocus
 }, ref) => {
   const i18n = hooks.useI18n();
@@ -257,8 +256,7 @@ const Tab = /*#__PURE__*/React.forwardRef(({
     active: popoverActive,
     activator: activator,
     autofocusTarget: "first-node",
-    onClose: togglePopoverActive,
-    zIndexOverride: disclosureZIndexOverride
+    onClose: togglePopoverActive
   }, /*#__PURE__*/React.createElement("div", {
     className: Tabs_module.default.ActionListWrap
   }, /*#__PURE__*/React.createElement(ActionList.ActionList, {

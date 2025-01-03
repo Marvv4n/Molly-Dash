@@ -20,7 +20,6 @@ var Menu = require('./components/Menu/Menu.js');
 // subcomponents so explicitly state the subcomponents in the type definition.
 // Letting this be implicit works in this project but fails in projects that use
 // generated *.d.ts files.
-
 const TopBar = function TopBar({
   showNavigationToggle,
   userMenu,

@@ -11,7 +11,6 @@ import { useI18n } from '../../utilities/i18n/hooks.esnext';
 // subcomponents so explicitly state the subcomponents in the type definition.
 // Letting this be implicit works in this project but fails in projects that use
 // generated *.d.ts files.
-
 const Autocomplete = function Autocomplete({
   options,
   selected,

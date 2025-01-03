@@ -324,7 +324,7 @@
       "label": "Pasek ładowania strony"
     },
     "TooltipOverlay": {
-      "accessibilityLabel": "Podpowiedź: {label}"
+      "accessibilityLabel": "Etykietka narzędzia: {label}"
     },
     "IndexProvider": {
       "defaultItemSingular": "Pozycja",

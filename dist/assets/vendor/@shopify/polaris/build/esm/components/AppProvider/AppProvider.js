@@ -90,7 +90,7 @@ class AppProvider extends Component {
   render() {
     const {
       children,
-      features = {}
+      features
     } = this.props;
     const themeName = this.getThemeName();
     const {

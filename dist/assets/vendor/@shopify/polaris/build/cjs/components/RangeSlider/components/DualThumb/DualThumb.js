@@ -12,11 +12,11 @@ var Label = require('../../../Label/Label.js');
 var EventListener = require('../../../EventListener/EventListener.js');
 var context = require('../../../../utilities/features/context.js');
 
-var Control = /*#__PURE__*/function (Control) {
+var Control;
+(function (Control) {
   Control[Control["Lower"] = 0] = "Lower";
   Control[Control["Upper"] = 1] = "Upper";
-  return Control;
-}(Control || {});
+})(Control || (Control = {}));
 class DualThumb extends React.Component {
   constructor(...args) {
     super(...args);

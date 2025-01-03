@@ -7,6 +7,7 @@ import styles from './ColorPicker.css.js';
 import { AlphaPicker } from './components/AlphaPicker/AlphaPicker.js';
 import { HuePicker } from './components/HuePicker/HuePicker.js';
 import { Slidable } from './components/Slidable/Slidable.js';
+import { EventListener } from '../EventListener/EventListener.js';
 
 const RESIZE_DEBOUNCE_TIME_MS = 200;
 class ColorPicker extends PureComponent {
@@ -100,18 +101,13 @@ class ColorPicker extends PureComponent {
       event.preventDefault();
     };
   }
-  componentWillUnmount() {
-    this.observer?.disconnect();
-  }
   componentDidMount() {
     const {
       colorNode
     } = this;
-    if (!colorNode) {
+    if (colorNode == null) {
       return;
     }
-    this.observer = new ResizeObserver(this.handleResize);
-    this.observer.observe(colorNode);
     this.setState({
       pickerSize: {
         width: colorNode.clientWidth,
@@ -183,7 +179,10 @@ class ColorPicker extends PureComponent {
     })), /*#__PURE__*/React.createElement(HuePicker, {
       hue: hue,
       onChange: this.handleHueChange
-    }), alphaSliderMarkup);
+    }), alphaSliderMarkup, /*#__PURE__*/React.createElement(EventListener, {
+      event: "resize",
+      handler: this.handleResize
+    }));
   }
 }
 

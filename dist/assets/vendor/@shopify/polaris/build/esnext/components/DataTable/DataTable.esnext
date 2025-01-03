@@ -423,6 +423,7 @@ class DataTableInner extends PureComponent {
 
     // focus fixed first column if present
   };
+
   navigateTable = direction => {
     const fixedFirstColumns = this.fixedFirstColumns();
     const {

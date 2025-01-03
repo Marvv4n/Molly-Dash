@@ -58,25 +58,7 @@
   width:100%;
   min-height:var(--pg-control-height);
   padding:var(--p-space-150) var(--p-space-200) var(--p-space-150) var(--p-space-300);
-
-  font-size:var(--p-font-size-400);
-  line-height:var(--p-font-line-height-600);
 }
-
-@media (min-width: 48em){
-
-.Polaris-Select__Content_xd1mk{
-    line-height:var(--p-font-line-height-500);
-    font-size:var(--p-font-size-325);
-}
-  }
-
-@media (max-width: 47.9975em){
-    .Polaris-Select__Content_xd1mk div > span{
-      font-size:var(--p-font-size-400);
-      line-height:var(--p-font-line-height-500);
-    }
-  }
 
 .Polaris-Select__SelectedOption_azu52{
   flex:1 1;
@@ -94,9 +76,9 @@
 }
 
 .Polaris-Select__Input_30ock{
-  font-size:var(--p-font-size-400);
+  font-size:var(--p-font-size-325);
   font-weight:var(--p-font-weight-regular);
-  line-height:var(--p-font-line-height-600);
+  line-height:var(--p-font-line-height-500);
   font-family:var(--p-font-family-sans);
   letter-spacing:initial;
   position:absolute;
@@ -113,14 +95,6 @@
   border:none;
   padding:var(--p-space-150) var(--p-space-200) var(--p-space-150) var(--p-space-300);
 }
-
-@media (min-width: 48em){
-
-.Polaris-Select__Input_30ock{
-    font-size:var(--p-font-size-325);
-    line-height:var(--p-font-line-height-500);
-}
-  }
 
 .Polaris-Select__Backdrop_1x2i2{
   z-index:var(--pc-select-backdrop);

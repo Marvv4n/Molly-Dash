@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { classNames } from '../../utilities/css.js';
 import styles from './EmptyState.css.js';
 import { buttonFrom } from '../Button/utils.js';
@@ -20,15 +20,13 @@ function EmptyState({
   footerContent
 }) {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const imageRef = useRef(null);
-  useEffect(() => {
-    if (imageRef.current?.complete) setImageLoaded(true);
+  const handleLoad = useCallback(() => {
+    setImageLoaded(true);
   }, []);
   const imageClassNames = classNames(styles.Image, imageLoaded && styles.loaded, imageContained && styles.imageContained);
   const loadedImageMarkup = largeImage ? /*#__PURE__*/React.createElement(Image, {
     alt: "",
     role: "presentation",
-    ref: imageRef,
     source: largeImage,
     className: imageClassNames,
     sourceSet: [{
@@ -39,14 +37,13 @@ function EmptyState({
       descriptor: '1136w'
     }],
     sizes: "(max-width: 568px) 60vw",
-    onLoad: () => setImageLoaded(true)
+    onLoad: handleLoad
   }) : /*#__PURE__*/React.createElement(Image, {
     alt: "",
     role: "presentation",
-    ref: imageRef,
     className: imageClassNames,
     source: image,
-    onLoad: () => setImageLoaded(true)
+    onLoad: handleLoad
   });
   const skeletonImageClassNames = classNames(styles.SkeletonImage, imageLoaded && styles.loaded);
   const imageContainerClassNames = classNames(styles.ImageContainer, !imageLoaded && styles.SkeletonImageContainer);

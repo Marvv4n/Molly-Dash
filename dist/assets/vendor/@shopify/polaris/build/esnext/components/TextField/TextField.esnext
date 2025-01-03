@@ -5,15 +5,15 @@ import { useIsAfterInitialMount } from '../../utilities/use-is-after-initial-mou
 import { Key } from '../../types.esnext';
 import { useEventListener } from '../../utilities/use-event-listener.esnext';
 import styles from './TextField.css.esnext';
+import { Spinner } from './components/Spinner/Spinner.esnext';
 import { Labelled, helpTextID } from '../Labelled/Labelled.esnext';
 import { Connected } from '../Connected/Connected.esnext';
-import { Spinner as Spinner$1 } from './components/Spinner/Spinner.esnext';
 import { Resizer } from './components/Resizer/Resizer.esnext';
 import { labelID } from '../Label/Label.esnext';
 import { useI18n } from '../../utilities/i18n/hooks.esnext';
 import { Icon } from '../Icon/Icon.esnext';
 import { Text } from '../Text/Text.esnext';
-import { Spinner } from '../Spinner/Spinner.esnext';
+import { Spinner as Spinner$1 } from '../Spinner/Spinner.esnext';
 
 function TextField({
   prefix,
@@ -130,7 +130,7 @@ function TextField({
     className: styles.Loading,
     id: `${id}-Loading`,
     ref: loadingRef
-  }, /*#__PURE__*/React.createElement(Spinner, {
+  }, /*#__PURE__*/React.createElement(Spinner$1, {
     size: "small"
   })) : null;
   let characterCountMarkup = null;
@@ -207,7 +207,7 @@ function TextField({
       once: true
     });
   }, [handleSpinnerButtonRelease]);
-  const spinnerMarkup = isNumericType && step !== 0 && !disabled && !readOnly ? /*#__PURE__*/React.createElement(Spinner$1, {
+  const spinnerMarkup = isNumericType && step !== 0 && !disabled && !readOnly ? /*#__PURE__*/React.createElement(Spinner, {
     onClick: handleClickChild,
     onChange: handleNumberChange,
     onMouseDown: handleSpinnerButtonPress,

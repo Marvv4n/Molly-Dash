@@ -13,18 +13,16 @@ function Pane({
   sectioned,
   children,
   height,
-  maxHeight,
-  minHeight,
   subdued,
   onScrolledToBottom
 }) {
   const className = css.classNames(Popover_module.default.Pane, fixed && Popover_module.default['Pane-fixed'], subdued && Popover_module.default['Pane-subdued'], captureOverscroll && Popover_module.default['Pane-captureOverscroll']);
   const content = sectioned ? components.wrapWithComponent(children, Section.Section, {}) : children;
-  const style = {
+  const style = height ? {
     height,
-    maxHeight,
-    minHeight
-  };
+    maxHeight: height,
+    minHeight: height
+  } : undefined;
   return fixed ? /*#__PURE__*/React.createElement("div", {
     style: style,
     className: className

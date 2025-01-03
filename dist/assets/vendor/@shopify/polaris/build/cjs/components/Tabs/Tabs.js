@@ -8,10 +8,10 @@ var usePrevious = require('../../utilities/use-previous.js');
 var utilities = require('./utilities.js');
 var Tabs_module = require('./Tabs.css.js');
 var Tab = require('./components/Tab/Tab.js');
+var TabMeasurer = require('./components/TabMeasurer/TabMeasurer.js');
 var Panel = require('./components/Panel/Panel.js');
 var List = require('./components/List/List.js');
 var CreateViewModal = require('./components/CreateViewModal/CreateViewModal.js');
-var TabMeasurer = require('./components/TabMeasurer/TabMeasurer.js');
 var hooks = require('../../utilities/i18n/hooks.js');
 var Text = require('../Text/Text.js');
 var Icon = require('../Icon/Icon.js');
@@ -31,8 +31,7 @@ const Tabs = ({
   onCreateNewView,
   onSelect,
   fitted,
-  disclosureText,
-  disclosureZIndexOverride
+  disclosureText
 }) => {
   const i18n = hooks.useI18n();
   const {
@@ -151,10 +150,9 @@ const Tabs = ({
       onToggleModal: handleToggleModal,
       onTogglePopover: handleTogglePopover,
       viewNames: viewNames,
-      disclosureZIndexOverride: disclosureZIndexOverride,
       ref: index === selected ? selectedTabRef : null
     }));
-  }, [disabled, tabs, children, selected, tabToFocus, disclosureZIndexOverride, handleTabClick, handleToggleModal, handleTogglePopover]);
+  }, [disabled, handleTabClick, tabs, children, selected, tabToFocus, handleToggleModal, handleTogglePopover]);
   const handleFocus = React.useCallback(event => {
     const target = event.target;
     const isItem = target.classList.contains(Tabs_module.default.Item);
@@ -411,8 +409,7 @@ const Tabs = ({
     activator: activator,
     active: disclosureActivatorVisible && showDisclosure,
     onClose: handleClose,
-    autofocusTarget: "first-node",
-    zIndexOverride: disclosureZIndexOverride
+    autofocusTarget: "first-node"
   }, /*#__PURE__*/React.createElement(List.List, {
     focusIndex: hiddenTabs.indexOf(tabToFocus),
     disclosureTabs: disclosureTabs,
@@ -428,8 +425,7 @@ const Tabs = ({
     activator: disabled ? newTab : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Tooltip.Tooltip, {
       content: i18n.translate('Polaris.Tabs.newViewTooltip'),
       preferredPosition: "above",
-      hoverDelay: 400,
-      zIndexOverride: disclosureZIndexOverride
+      hoverDelay: 400
     }, newTab))
   })) : null))), panelMarkup);
 };

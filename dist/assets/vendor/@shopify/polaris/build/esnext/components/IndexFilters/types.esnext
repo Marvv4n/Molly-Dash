@@ -1,8 +1,8 @@
-let IndexFiltersMode = /*#__PURE__*/function (IndexFiltersMode) {
+let IndexFiltersMode;
+(function (IndexFiltersMode) {
   IndexFiltersMode["Default"] = "DEFAULT";
   IndexFiltersMode["Filtering"] = "FILTERING";
   IndexFiltersMode["EditingColumns"] = "EDITING_COLUMNS";
-  return IndexFiltersMode;
-}({});
+})(IndexFiltersMode || (IndexFiltersMode = {}));
 
 export { IndexFiltersMode };

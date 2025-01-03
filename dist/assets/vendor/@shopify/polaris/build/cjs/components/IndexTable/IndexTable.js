@@ -2,19 +2,20 @@
 
 var React = require('react');
 var polarisIcons = require('@shopify/polaris-icons');
+var reactTransitionGroup = require('react-transition-group');
 var debounce = require('../../utilities/debounce.js');
 var useToggle = require('../../utilities/use-toggle.js');
-var useIsomorphicLayoutEffect = require('../../utilities/use-isomorphic-layout-effect.js');
 var css = require('../../utilities/css.js');
+var useTheme = require('../../utilities/use-theme.js');
 var IndexTable_module = require('./IndexTable.css.js');
 var IndexProvider = require('../IndexProvider/IndexProvider.js');
+var Cell = require('./components/Cell/Cell.js');
 var Row = require('./components/Row/Row.js');
 var types = require('../../utilities/index-provider/types.js');
 var utilities = require('./utilities/utilities.js');
 var EmptySearchResult = require('../EmptySearchResult/EmptySearchResult.js');
 var ScrollContainer = require('./components/ScrollContainer/ScrollContainer.js');
 var BulkActions = require('../BulkActions/BulkActions.js');
-var Cell = require('./components/Cell/Cell.js');
 var hooks = require('../../utilities/index-provider/hooks.js');
 var hooks$1 = require('../../utilities/i18n/hooks.js');
 var Spinner = require('../Spinner/Spinner.js');
@@ -50,6 +51,7 @@ function IndexTableBase({
   pagination,
   ...restProps
 }) {
+  const theme = useTheme.useTheme();
   const {
     loading,
     bulkSelectState,
@@ -78,6 +80,7 @@ function IndexTableBase({
   const tableElement = React.useRef(null);
   const tableBodyElement = React.useRef(null);
   const condensedListElement = React.useRef(null);
+  const loadingElement = React.useRef(null);
   const [tableInitialized, setTableInitialized] = React.useState(false);
   const [stickyWrapper, setStickyWrapper] = React.useState(null);
   const [hideScrollContainer, setHideScrollContainer] = React.useState(true);
@@ -222,7 +225,7 @@ function IndexTableBase({
     }
     scrollingContainer.current = false;
   }, []);
-  useIsomorphicLayoutEffect.useIsomorphicLayoutEffect(() => {
+  React.useLayoutEffect(() => {
     tableHeadings.current = utilities.getTableHeadingsBySelector(tableElement.current, '[data-index-table-heading]');
     stickyTableHeadings.current = utilities.getTableHeadingsBySelector(stickyHeaderWrapperElement.current, '[data-index-table-sticky-heading]');
     resizeTableHeadings();
@@ -252,8 +255,22 @@ function IndexTableBase({
     handleSelectionChange(types.SelectionType.Page, Boolean(!bulkSelectState || bulkSelectState === 'indeterminate'));
   }, [bulkSelectState, handleSelectionChange]);
   const paginatedSelectAllAction = getPaginatedSelectAllAction();
-  const loadingMarkup = /*#__PURE__*/React.createElement("div", {
-    className: css.classNames(IndexTable_module.default.LoadingPanel, loading && IndexTable_module.default.LoadingPanelEntered)
+  const loadingTransitionClassNames = {
+    enter: IndexTable_module.default['LoadingContainer-enter'],
+    enterActive: IndexTable_module.default['LoadingContainer-enter-active'],
+    exit: IndexTable_module.default['LoadingContainer-exit'],
+    exitActive: IndexTable_module.default['LoadingContainer-exit-active']
+  };
+  const loadingMarkup = /*#__PURE__*/React.createElement(reactTransitionGroup.CSSTransition, {
+    in: loading,
+    classNames: loadingTransitionClassNames,
+    timeout: parseInt(theme.motion['motion-duration-100'], 10),
+    nodeRef: loadingElement,
+    appear: true,
+    unmountOnExit: true
+  }, /*#__PURE__*/React.createElement("div", {
+    className: IndexTable_module.default.LoadingPanel,
+    ref: loadingElement
   }, /*#__PURE__*/React.createElement("div", {
     className: IndexTable_module.default.LoadingPanelRow
   }, /*#__PURE__*/React.createElement(Spinner.Spinner, {
@@ -262,7 +279,7 @@ function IndexTableBase({
     className: IndexTable_module.default.LoadingPanelText
   }, i18n.translate('Polaris.IndexTable.resourceLoadingAccessibilityLabel', {
     resourceNamePlural: resourceName.plural.toLocaleLowerCase()
-  }))));
+  })))));
   const stickyTableClassNames = css.classNames(IndexTable_module.default.StickyTable, hasMoreLeftColumns && IndexTable_module.default['StickyTable-scrolling'], condensed && IndexTable_module.default['StickyTable-condensed']);
   const shouldShowActions = !condensed || selectedItemsCount;
   const promotedActions = shouldShowActions ? promotedBulkActions : [];

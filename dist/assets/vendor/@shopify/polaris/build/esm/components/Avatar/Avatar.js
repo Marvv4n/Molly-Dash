@@ -5,12 +5,12 @@ import styles from './Avatar.css.js';
 import { useI18n } from '../../utilities/i18n/hooks.js';
 import { Image } from '../Image/Image.js';
 
-var Status = /*#__PURE__*/function (Status) {
+var Status;
+(function (Status) {
   Status["Pending"] = "PENDING";
   Status["Loaded"] = "LOADED";
   Status["Errored"] = "ERRORED";
-  return Status;
-}(Status || {});
+})(Status || (Status = {}));
 const STYLE_CLASSES = ['one', 'two', 'three', 'four', 'five', 'six', 'seven'];
 const avatarStrokeWidth = {
   xs: '3',

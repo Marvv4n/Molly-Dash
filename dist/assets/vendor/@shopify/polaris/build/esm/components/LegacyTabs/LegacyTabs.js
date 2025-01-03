@@ -51,7 +51,6 @@ class TabsInner extends PureComponent {
         tabToFocus: tabsArrayInOrder[newFocus]
       });
     };
-    // eslint-disable-next-line @shopify/react-no-multiple-render-methods
     this.renderTabMarkup = (tab, index) => {
       const {
         selected,
@@ -287,7 +286,10 @@ class TabsInner extends PureComponent {
       onKeyPress: this.handleKeyPress
     }))))), panelMarkup);
   }
+
+  // eslint-disable-next-line @shopify/react-no-multiple-render-methods
 }
+
 function noop() {}
 function handleKeyDown(event) {
   const {

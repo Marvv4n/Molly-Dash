@@ -1,6 +1,6 @@
 .Polaris-FormLayout__Item_yiyol{
   --pc-form-layout-item-min-size:13.75rem;
-  flex:1 1;
+  flex:1 1 auto;
 }
 .Polaris-FormLayout__Item_yiyol.Polaris-FormLayout--grouped_17srt{
     min-width:var(--pc-form-layout-item-min-size);

@@ -79,39 +79,29 @@ class Slidable extends React.PureComponent {
       });
     };
   }
-  componentWillUnmount() {
-    this.observer?.disconnect();
-  }
   componentDidMount() {
-    if (!this.node) {
+    const {
+      onDraggerHeight
+    } = this.props;
+    if (onDraggerHeight == null) {
       return;
     }
-    this.observer = new ResizeObserver(() => {
-      /**
-       * This is a workaround to enable event listeners to be
-       * re-attached when moving from one document to another
-       * when using a React portal across iframes.
-       * Using a resize observer works because when the clientWidth
-       * will go from 0 to the real width after the node
-       * gets rendered in its new place.
-       */
-      const {
-        window
-      } = this.state;
-      if (window !== this.node?.ownerDocument.defaultView) {
-        this.setState({
-          window: this.node?.ownerDocument.defaultView
-        });
-      }
-      this.handleResize();
-    });
-    this.observer.observe(this.node);
-    this.handleResize();
+    const {
+      draggerNode
+    } = this;
+    if (draggerNode == null) {
+      return;
+    }
+    onDraggerHeight(draggerNode.clientWidth);
+    if (process.env.NODE_ENV === 'development') {
+      setTimeout(() => {
+        onDraggerHeight(draggerNode.clientWidth);
+      }, 0);
+    }
   }
   render() {
     const {
-      dragging,
-      window
+      dragging
     } = this.state;
     const {
       draggerX = 0,
@@ -123,29 +113,24 @@ class Slidable extends React.PureComponent {
     const moveListener = dragging ? /*#__PURE__*/React.createElement(EventListener.EventListener, {
       event: "mousemove",
       handler: this.handleMove,
-      passive: false,
-      window: window
+      passive: false
     }) : null;
     const touchMoveListener = dragging ? /*#__PURE__*/React.createElement(EventListener.EventListener, {
       event: "touchmove",
       handler: this.handleMove,
-      passive: false,
-      window: window
+      passive: false
     }) : null;
     const endDragListener = dragging ? /*#__PURE__*/React.createElement(EventListener.EventListener, {
       event: "mouseup",
-      handler: this.handleDragEnd,
-      window: window
+      handler: this.handleDragEnd
     }) : null;
     const touchEndListener = dragging ? /*#__PURE__*/React.createElement(EventListener.EventListener, {
       event: "touchend",
-      handler: this.handleDragEnd,
-      window: window
+      handler: this.handleDragEnd
     }) : null;
     const touchCancelListener = dragging ? /*#__PURE__*/React.createElement(EventListener.EventListener, {
       event: "touchcancel",
-      handler: this.handleDragEnd,
-      window: window
+      handler: this.handleDragEnd
     }) : null;
     return /*#__PURE__*/React.createElement("div", {
       ref: this.setNode,
@@ -157,26 +142,6 @@ class Slidable extends React.PureComponent {
       className: ColorPicker_module.default.Dragger,
       ref: this.setDraggerNode
     }));
-  }
-  handleResize() {
-    const {
-      onDraggerHeight
-    } = this.props;
-    if (!onDraggerHeight) {
-      return;
-    }
-    const {
-      draggerNode
-    } = this;
-    if (!draggerNode) {
-      return;
-    }
-    onDraggerHeight(draggerNode.clientWidth);
-    if (process.env.NODE_ENV === 'development') {
-      setTimeout(() => {
-        onDraggerHeight(draggerNode.clientWidth);
-      }, 0);
-    }
   }
 }
 function isMouseMoveEvent(event) {

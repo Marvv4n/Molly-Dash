@@ -1,6 +1,7 @@
 'use strict';
 
-let ToneValue = /*#__PURE__*/function (ToneValue) {
+exports.ToneValue = void 0;
+(function (ToneValue) {
   ToneValue["Info"] = "info";
   ToneValue["Success"] = "success";
   ToneValue["Warning"] = "warning";
@@ -15,14 +16,10 @@ let ToneValue = /*#__PURE__*/function (ToneValue) {
   ToneValue["AttentionStrong"] = "attention-strong";
   ToneValue["ReadOnly"] = "read-only";
   ToneValue["Enabled"] = "enabled";
-  return ToneValue;
-}({});
-let ProgressValue = /*#__PURE__*/function (ProgressValue) {
+})(exports.ToneValue || (exports.ToneValue = {}));
+exports.ProgressValue = void 0;
+(function (ProgressValue) {
   ProgressValue["Incomplete"] = "incomplete";
   ProgressValue["PartiallyComplete"] = "partiallyComplete";
   ProgressValue["Complete"] = "complete";
-  return ProgressValue;
-}({});
-
-exports.ProgressValue = ProgressValue;
-exports.ToneValue = ToneValue;
+})(exports.ProgressValue || (exports.ProgressValue = {}));

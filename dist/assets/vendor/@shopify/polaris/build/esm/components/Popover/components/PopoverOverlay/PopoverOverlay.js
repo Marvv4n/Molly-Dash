@@ -12,20 +12,20 @@ import { EventListener } from '../../../EventListener/EventListener.js';
 import { KeypressListener } from '../../../KeypressListener/KeypressListener.js';
 import { PositionedOverlay } from '../../../PositionedOverlay/PositionedOverlay.js';
 
-let PopoverCloseSource = /*#__PURE__*/function (PopoverCloseSource) {
+let PopoverCloseSource;
+(function (PopoverCloseSource) {
   PopoverCloseSource[PopoverCloseSource["Click"] = 0] = "Click";
   PopoverCloseSource[PopoverCloseSource["EscapeKeypress"] = 1] = "EscapeKeypress";
   PopoverCloseSource[PopoverCloseSource["FocusOut"] = 2] = "FocusOut";
   PopoverCloseSource[PopoverCloseSource["ScrollOut"] = 3] = "ScrollOut";
-  return PopoverCloseSource;
-}({});
-var TransitionStatus = /*#__PURE__*/function (TransitionStatus) {
+})(PopoverCloseSource || (PopoverCloseSource = {}));
+var TransitionStatus;
+(function (TransitionStatus) {
   TransitionStatus["Entering"] = "entering";
   TransitionStatus["Entered"] = "entered";
   TransitionStatus["Exiting"] = "exiting";
   TransitionStatus["Exited"] = "exited";
-  return TransitionStatus;
-}(TransitionStatus || {});
+})(TransitionStatus || (TransitionStatus = {}));
 class PopoverOverlay extends PureComponent {
   constructor(props) {
     super(props);
@@ -33,7 +33,6 @@ class PopoverOverlay extends PureComponent {
       transitionStatus: this.props.active ? TransitionStatus.Entering : TransitionStatus.Exited
     };
     this.contentNode = /*#__PURE__*/createRef();
-    // eslint-disable-next-line @shopify/react-no-multiple-render-methods
     this.renderPopover = overlayDetails => {
       const {
         measuring,
@@ -57,23 +56,17 @@ class PopoverOverlay extends PureComponent {
         height: desiredHeight
       };
       const contentClassNames = classNames(styles.Content, fullHeight && styles['Content-fullHeight'], fluidContent && styles['Content-fluidContent']);
-      const {
-        window
-      } = this.state;
       return /*#__PURE__*/React.createElement("div", Object.assign({
         className: className
       }, overlay.props), /*#__PURE__*/React.createElement(EventListener, {
         event: "click",
-        handler: this.handleClick,
-        window: window
+        handler: this.handleClick
       }), /*#__PURE__*/React.createElement(EventListener, {
         event: "touchstart",
-        handler: this.handleClick,
-        window: window
+        handler: this.handleClick
       }), /*#__PURE__*/React.createElement(KeypressListener, {
         keyCode: Key.Escape,
-        handler: this.handleEscape,
-        document: window?.document
+        handler: this.handleEscape
       }), /*#__PURE__*/React.createElement("div", {
         className: styles.FocusTracker
         // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
@@ -158,20 +151,6 @@ class PopoverOverlay extends PureComponent {
       this.focusContent();
       this.changeTransitionStatus(TransitionStatus.Entered);
     }
-    this.observer = new ResizeObserver(() => {
-      this.setState({
-        /**
-         * This is a workaround to enable event listeners to be
-         * re-attached when moving from one document to another
-         * when using a React portal across iframes.
-         * Using a resize observer works because when the clientWidth
-         * will go from 0 to the real width after the activator
-         * gets rendered in its new place.
-         */
-        window: this.props.activator.ownerDocument.defaultView
-      });
-    });
-    this.observer.observe(this.props.activator);
   }
   componentDidUpdate(oldProps) {
     if (this.props.active && !oldProps.active) {
@@ -193,14 +172,9 @@ class PopoverOverlay extends PureComponent {
         transitionStatus: TransitionStatus.Exited
       });
     }
-    if (this.props.activator !== oldProps.activator) {
-      this.observer?.unobserve(oldProps.activator);
-      this.observer?.observe(this.props.activator);
-    }
   }
   componentWillUnmount() {
     this.clearTransitionTimeout();
-    this.observer?.disconnect();
   }
   render() {
     const {
@@ -261,6 +235,8 @@ class PopoverOverlay extends PureComponent {
       }
     });
   }
+
+  // eslint-disable-next-line @shopify/react-no-multiple-render-methods
 }
 PopoverOverlay.contextType = PortalsManagerContext;
 function renderPopoverContent(children, props) {

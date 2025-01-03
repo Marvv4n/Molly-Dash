@@ -1,9 +1,8 @@
 import React from 'react';
-import { XIcon } from '@shopify/polaris-icons';
+import { XSmallIcon } from '@shopify/polaris-icons';
 import { classNames } from '../../utilities/css.js';
 import styles from './CalloutCard.css.js';
 import { LegacyCard } from '../LegacyCard/LegacyCard.js';
-import { useI18n } from '../../utilities/i18n/hooks.js';
 import { buttonFrom } from '../Button/utils.js';
 import { Button } from '../Button/Button.js';
 import { Text } from '../Text/Text.js';
@@ -19,7 +18,6 @@ function CalloutCard({
   secondaryAction,
   onDismiss
 }) {
-  const i18n = useI18n();
   const primaryActionMarkup = buttonFrom(primaryAction);
   const secondaryActionMarkup = secondaryAction ? buttonFrom(secondaryAction, {
     variant: secondaryAction.variant ?? 'tertiary'
@@ -28,10 +26,10 @@ function CalloutCard({
   const dismissButton = onDismiss ? /*#__PURE__*/React.createElement("div", {
     className: styles.Dismiss
   }, /*#__PURE__*/React.createElement(Button, {
-    variant: "tertiary",
-    icon: XIcon,
+    variant: "plain",
+    icon: XSmallIcon,
     onClick: onDismiss,
-    accessibilityLabel: i18n.translate('Polaris.Banner.dismissButton')
+    accessibilityLabel: "Dismiss card"
   })) : null;
   const imageClassName = classNames(styles.Image, onDismiss && styles.DismissImage);
   const containerClassName = classNames(styles.Container, onDismiss && styles.hasDismiss);

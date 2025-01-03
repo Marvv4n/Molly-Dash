@@ -13,11 +13,8 @@ const Item = /*#__PURE__*/memo(function Item({
 }) {
   const focusedNode = useRef(null);
   useEffect(() => {
-    const focusTarget = focusedNode.current;
-    if (focusTarget && focusTarget instanceof HTMLElement && focused) {
-      requestAnimationFrame(() => {
-        focusTarget.focus();
-      });
+    if (focusedNode.current && focusedNode.current instanceof HTMLElement && focused) {
+      focusedNode.current.focus();
     }
   }, [focusedNode, focused]);
   const classname = classNames(styles.Item);

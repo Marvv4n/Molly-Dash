@@ -142,7 +142,10 @@ var hooks$2 = require('./utilities/ephemeral-presence-manager/hooks.js');
 
 exports.DEFAULT_LOCALE = configure.DEFAULT_LOCALE;
 exports.SUPPORTED_LOCALES = configure.SUPPORTED_LOCALES;
-exports.Key = types.Key;
+Object.defineProperty(exports, 'Key', {
+  enumerable: true,
+  get: function () { return types.Key; }
+});
 exports.DATA_ATTRIBUTE = shared.DATA_ATTRIBUTE;
 exports.ThemeProvider = ThemeProvider.ThemeProvider;
 exports.hexToRgb = colorTransformers.hexToRgb;
@@ -172,8 +175,14 @@ exports.Autocomplete = Autocomplete.Autocomplete;
 exports.Avatar = Avatar.Avatar;
 exports.Backdrop = Backdrop.Backdrop;
 exports.Badge = Badge.Badge;
-exports.BadgeProgressValue = types$1.ProgressValue;
-exports.BadgeStatusValue = types$1.ToneValue;
+Object.defineProperty(exports, 'BadgeProgressValue', {
+  enumerable: true,
+  get: function () { return types$1.ProgressValue; }
+});
+Object.defineProperty(exports, 'BadgeStatusValue', {
+  enumerable: true,
+  get: function () { return types$1.ToneValue; }
+});
 exports.Banner = Banner.Banner;
 exports.Bleed = Bleed.Bleed;
 exports.Box = Box.Box;
@@ -216,7 +225,10 @@ exports.Icon = Icon.Icon;
 exports.Image = Image.Image;
 exports.IndexFilters = IndexFilters.IndexFilters;
 exports.useSetIndexFiltersMode = useSetIndexFiltersMode.useSetIndexFiltersMode;
-exports.IndexFiltersMode = types$2.IndexFiltersMode;
+Object.defineProperty(exports, 'IndexFiltersMode', {
+  enumerable: true,
+  get: function () { return types$2.IndexFiltersMode; }
+});
 exports.IndexTable = IndexTable.IndexTable;
 exports.Indicator = Indicator.Indicator;
 exports.InlineStack = InlineStack.InlineStack;
@@ -235,7 +247,10 @@ exports.LegacyStack = LegacyStack.LegacyStack;
 exports.LegacyTabs = LegacyTabs.LegacyTabs;
 exports.Link = Link.Link;
 exports.List = List.List;
-exports.AutoSelection = Listbox.AutoSelection;
+Object.defineProperty(exports, 'AutoSelection', {
+  enumerable: true,
+  get: function () { return Listbox.AutoSelection; }
+});
 exports.Listbox = Listbox.Listbox;
 exports.Loading = Loading.Loading;
 exports.MediaCard = MediaCard.MediaCard;
@@ -249,7 +264,10 @@ exports.Pagination = Pagination.Pagination;
 exports.AlphaPicker = Picker.Picker;
 exports.PolarisTestProvider = PolarisTestProvider.PolarisTestProvider;
 exports.Popover = Popover.Popover;
-exports.PopoverCloseSource = PopoverOverlay.PopoverCloseSource;
+Object.defineProperty(exports, 'PopoverCloseSource', {
+  enumerable: true,
+  get: function () { return PopoverOverlay.PopoverCloseSource; }
+});
 exports.Portal = Portal.Portal;
 exports.PortalsManager = PortalsManager.PortalsManager;
 exports.PositionedOverlay = PositionedOverlay.PositionedOverlay;
@@ -294,5 +312,8 @@ exports.useIndexTableContainerScroll = hooks$1.useContainerScroll;
 exports.useIndexTableRowHovered = hooks$1.useRowHovered;
 exports.useIndexTableRowSelected = hooks$1.useRowSelected;
 exports.INDEX_TABLE_SELECT_ALL_ITEMS = types$3.SELECT_ALL_ITEMS;
-exports.IndexTableSelectionType = types$3.SelectionType;
+Object.defineProperty(exports, 'IndexTableSelectionType', {
+  enumerable: true,
+  get: function () { return types$3.SelectionType; }
+});
 exports.useEphemeralPresenceManager = hooks$2.useReadOnlyEphemeralPresenceManager;

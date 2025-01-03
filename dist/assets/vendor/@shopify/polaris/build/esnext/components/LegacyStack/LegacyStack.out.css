@@ -65,12 +65,11 @@
   flex:1 1 auto;
 }
 
-@supports ((min-width: -webkit-fit-content) or (min-width: -moz-fit-content) or (min-width: fit-content)){
+@supports ((min-width: -webkit-fit-content) or (min-width: fit-content)){
 
 .Polaris-LegacyStack--distributionFillEvenly_aehjo > .Polaris-LegacyStack__Item_yiyol{
     flex:1 0;
     min-width:-webkit-fit-content;
-    min-width:-moz-fit-content;
     min-width:fit-content;
 }
   }

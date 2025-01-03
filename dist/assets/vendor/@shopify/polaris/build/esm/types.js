@@ -2,7 +2,8 @@
 
 /* eslint-enable @shopify/strict-component-boundaries */
 
-let Key = /*#__PURE__*/function (Key) {
+let Key;
+(function (Key) {
   Key[Key["Backspace"] = 8] = "Backspace";
   Key[Key["Tab"] = 9] = "Tab";
   Key[Key["Enter"] = 13] = "Enter";
@@ -102,11 +103,8 @@ let Key = /*#__PURE__*/function (Key) {
   Key[Key["BackSlash"] = 220] = "BackSlash";
   Key[Key["CloseBracket"] = 221] = "CloseBracket";
   Key[Key["SingleQuote"] = 222] = "SingleQuote";
-  return Key;
-}({});
-
-/**
- * Useful for defining mutually exclusive props such as:
+})(Key || (Key = {}));
+/* Useful for defining mutually exclusive props such as:
  *
  * interface MessageBasics {
  *   timestamp?: number;

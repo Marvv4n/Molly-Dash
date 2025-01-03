@@ -8,8 +8,7 @@ function KeypressListener({
   handler,
   keyEvent = 'keyup',
   options,
-  useCapture,
-  document: ownerDocument = globalThis.document
+  useCapture
 }) {
   const tracked = React.useRef({
     handler,
@@ -31,11 +30,11 @@ function KeypressListener({
     }
   }, []);
   React.useEffect(() => {
-    ownerDocument.addEventListener(keyEvent, handleKeyEvent, useCapture || options);
+    document.addEventListener(keyEvent, handleKeyEvent, useCapture || options);
     return () => {
-      ownerDocument.removeEventListener(keyEvent, handleKeyEvent, useCapture || options);
+      document.removeEventListener(keyEvent, handleKeyEvent, useCapture || options);
     };
-  }, [keyEvent, handleKeyEvent, useCapture, options, ownerDocument]);
+  }, [keyEvent, handleKeyEvent, useCapture, options]);
   return null;
 }
 
