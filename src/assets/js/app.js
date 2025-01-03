@@ -405,3 +405,21 @@ class ThemeLayout {
 }
 
 new ThemeLayout().init();
+
+// Notification Functions
+function clearAllNotifications() {
+    localStorage.setItem('notifications', '[]');
+    document.querySelectorAll('[data-simplebar]').forEach(el => {
+        el.innerHTML = '<div class="text-center p-2">No notifications</div>';
+    });
+    document.querySelector('.topbar-badge').style.display = 'none';
+}
+
+// Store initial notifications
+document.addEventListener('DOMContentLoaded', function() {
+    if (!localStorage.getItem('notifications')) {
+        const initialNotifications = Array.from(document.querySelectorAll('[data-simplebar] .dropdown-item'))
+            .map(item => item.outerHTML);
+        localStorage.setItem('notifications', JSON.stringify(initialNotifications));
+    }
+});
