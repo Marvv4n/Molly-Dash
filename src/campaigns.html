@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Campaigns | MollyAI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="MollyAI Campaign Management" name="description" />
+    <meta content="Stackbros" name="author" />
+
+    @@include("partials/head-css.html")
+</head>
+
+<body>
+    <div class="app-wrapper">
+        @@include("partials/sidebar.html")
+
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Campaign Management</h4>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newCampaignModal">
+                                    Create Campaign
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-centered table-nowrap mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Campaign Name</th>
+                                                <th>Budget</th>
+                                                <th>Platform</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="campaignsList">
+                                            <!-- Campaign data will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @@include("partials/footer.html")
+        </div>
+    </div>
+
+    <!-- New Campaign Modal -->
+    <div class="modal fade" id="newCampaignModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Campaign</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newCampaignForm">
+                        <div class="mb-3">
+                            <label class="form-label">Campaign Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Budget</label>
+                            <input type="number" class="form-control" name="budget" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Platform</label>
+                            <select class="form-select" name="platform" required>
+                                <option value="facebook">Facebook</option>
+                                <option value="google">Google</option>
+                                <option value="tiktok">TikTok</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="createCampaignBtn">Create Campaign</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @@include("partials/vendor-scripts.html")
+</body>
+</html>
