@@ -4,7 +4,11 @@
     "description": "Taplox -Responsive Admin Dashboard Template",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "gulp",
+        "build": "gulp build",
+        "start": "node server.js",
+        "prisma:generate": "prisma generate",
+        "prisma:push": "prisma db push"
     },
     "author": "Stackbros",
     "private": true,
